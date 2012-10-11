@@ -1,0 +1,199 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{color}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{multirow}
+\usepackage{amssymb, amsmath, amsfonts}
+\bibliographystyle{plain}
+\topmargin		0 cm
+\hoffset		0 cm
+\voffset		0 cm
+\evensidemargin		0 cm
+\oddsidemargin		0 cm
+\setlength{\textwidth}{16 cm}
+\setlength{\textheight}{21 cm}
+\usepackage{pnl}
+\defineshdwidth{0.1 cm}
+
+\title{Apostila de Instalação do CUTEr}
+\author{Abel Soares Siqueira}
+
+\numberwithin{equation}{section}
+
+% \newcommand{\visiblelbl}[1]{\label{#1}{\color{red}{#1}}}
+\newcommand{\visiblelbl}[1]{\label{#1}}
+
+\begin{document}
+\maketitle
+
+A biblioteca CUTEr (\cite{bib:cuter1,bib:cuter2}) é de extrema importância para a
+realização de testes computacionais na área de otimização computacional. 
+Tendo em vista que é necessário fazer comparações entre os algoritmos,
+Muitos deles atualmente têm uma interface que permite a execução dos testes
+do CUTEr. Vamos mostrar nesse tutorial como instalar o CUTEr e criar uma interface
+em Fortran, C e C++ para o mesmo. Algumas partes deste tutorial supõem que o leitor
+saiba o suficiente de linux.
+
+\section{Instalação}
+
+O CUTEr é um ambiente de testes para métodos de otimização. 
+Ele foi feito em Fortran, porém tem suporte a C/C++.
+Para instalar o CUTEr você irá precisar dos programas:
+\begin{itemize}
+ \item gawk 
+ \item gcc 
+ \item gfortran (ou outro compilador de fortran)
+ \item svn (subversion)
+\end{itemize}
+Com os pacotes instalados, iremos criar uma pasta para o CUTEr. Você pode criar uma
+pasta separada no sistema ou instalar tudo no seu diretório principal. No meu caso,
+irei criar uma pasta chamada \verb+libraries+ na minha pasta pessoal, e criar uma
+pasta para o CUTEr dentro dessa pasta. Ajuste os comandos de acordo com sua escolha.
+\begin{verbatim}
+$ mkdir -p $HOME/libraries/CUTEr
+$ cd $HOME/libraries/CUTEr
+\end{verbatim}
+Agora faça o download do SifDec2 e do CUTEr2 pelo svn, usando os comandos{\color{red} *}
+\small
+\begin{verbatim}
+$ svn co https://magi-trac-svn.mathappl.polymtl.ca/SVN/cuter/sifdec/branches/SifDec2 ./sifdec2 
+$ svn co https://magi-trac-svn.mathappl.polymtl.ca/SVN/cuter/cuter/branches/CUTEr64 ./cuter2
+\end{verbatim}
+{\color{red}*Obs: Na última vez que tentei, o site estava fora do ar. Subi no site do LPOO
+uma cópia da minha última versão, em 64 bits, de alguns meses. Os comandos para baixar e
+ descompactar
+essa versão são:
+\begin{verbatim}
+$ wget www.lpoo.ime.unicamp.br/CUTEr/sifdec2.tar.gz
+$ wget www.lpoo.ime.unicamp.br/CUTEr/cuter2.tar.gz
+$ tar -zxf sifdec2.tar.gz
+$ tar -zxf cuter2.tar.gz
+\end{verbatim}
+Se você precisar da versão em 32 bits, rode o seguinte comando na pasta atualmente
+\begin{verbatim}
+$ sed -i 's/-m64//g' cuter2/config/{mac,all,linux}.cf
+\end{verbatim}
+}
+\normalsize
+Faça o download da coleção de problemas SIF na página
+\begin{verbatim}
+http://cuter.rl.ac.uk/cuter-www/Problems/mastsif.shtml
+\end{verbatim}
+ou use os comandos
+\begin{verbatim}
+$ wget ftp://ftp.numerical.rl.ac.uk/pub/cuter/mastsif_small.tar.gz 
+$ wget ftp://ftp.numerical.rl.ac.uk/pub/cuter/mastsif_large.tar.gz
+\end{verbatim}
+Descompacte os problemas pequenos com o comando
+\begin{verbatim}
+$ tar -zxvf mastsif_small.tar.gz 
+\end{verbatim}
+Se quiser, descompacte os problemas grandes também. Note que estes problemas são
+muito mais pesados que os pequenos, então aconselho baixá-los apenas se for necessário.
+\begin{verbatim}
+$ tar -zxvf mastsif_large.tar.gz
+\end{verbatim}
+Iremos começar a instalar o CUTEr. Para isso, vamos instalar o decodificador
+dos problemas SIF (que faz parte da biblioteca CUTEr).
+Entre na pasta \verb+sifdec2+ criada em \verb+$HOME/libraries/CUTEr+.
+\begin{verbatim}
+$ cd $HOME/libraries/CUTEr/sifdec2
+\end{verbatim}
+Agora digite o comando
+\begin{verbatim}
+$ ./install_sifdec
+\end{verbatim}
+A instalação do sifdec irá pedir que você escolha
+\begin{itemize}
+ \item Plataforma (no nosso caso será 5 - PC)
+ \item Sistema Operacional (no nosso caso será 2 - linux)
+ \item Compilador Fortran (no nosso caso será 7 - GNU gfortran)
+ \item Precisão (no nosso caso será D - double)
+ \item Tamanho (no nosso caso será L - large, porém pode ser necessário mudar para C - custom,
+dependendo do software e dos testes que você utilizará. Nesse caso edite o arquivo na pasta
+\verb+build/arch/size.custom+ antes de continuar.)
+\end{itemize}
+O instalador vai lançar a mensagem
+\begin{verbatim}
+ By default, SifDec with your selections will be installed in
+  /home/abel/libraries/CUTEr/sifdec2/SifDec.large.pc.lnx.gfo
+ Is this OK (Y/n)?
+\end{verbatim}
+Anote o nome do diretório que será criado e aperte enter. No nosso caso, será \\
+ \verb+SifDec.large.pc.lnx.gfo+. Para a próxima mensagem, escreva `n' e aperte enter.
+
+Agora vamos acrescentar as variáveis de sistema para que o instalador e os softwares
+que formos utilizar saibam onde está o CUTEr. Edite o arquivo \verb+$HOME/.bashrc+ e
+adicione as seguintes linhas
+\begin{verbatim}
+ROOTCUTER="$HOME/libraries/CUTEr"
+export CUTER="$ROOTCUTER/cuter2"
+export MYCUTER="$CUTER/CUTEr.large.pc.lnx.gfo" 
+export SIFDEC="$ROOTCUTER/sifdec2"
+export MYSIFDEC="$SIFDEC/SifDec.large.pc.lnx.gfo" 
+export MASTSIF="$ROOTCUTER/mastsif" 
+export MANPATH="$CUTER/common/man:$SIFDEC/common/man:$MANPATH" 
+export PATH="$MYCUTER/bin:$MYSIFDEC/bin:$PATH"
+\end{verbatim}
+Se for necessário, mude a variável \verb+ROOTCUTER+, e o diretório que eu mandei anotar. 
+Note que já criamos um diretório para o CUTEr, supondo que ele siga as mesmas opções
+que o SifDec. 
+Para que essas mudanças façam efeito é necessário usar o comando
+\begin{verbatim}
+$ source $HOME/.bashrc
+\end{verbatim}
+ou reiniciar o terminal.
+Agora entre na pasta que criamos anteriormente. Para isso basta fazer
+\begin{verbatim}
+$ cd $MYSIFDEC
+\end{verbatim}
+Se deu algum erro, você pode ter errado o nome na definição da variável. Verifique que a
+pasta realmente existe e refaça os passos se necessário.
+
+Agora rode o comando
+\begin{verbatim}
+$ ./install_mysifdec
+\end{verbatim}
+Ao final desse comando, a frase
+\begin{verbatim}
+install_mysifdec : Do you want to 'make all' in
+ /home/abel/libraries/CUTEr/sifdec2/SifDec.large.pc.lnx.gfo now (Y/n)?
+\end{verbatim}
+aparecerá. Aperte enter. Agora vamos instalar o CUTEr. Para isso, faça
+\begin{verbatim}
+$ cd $CUTER
+$ ./install_cuter
+\end{verbatim}
+A instalação do cuter irá pedir que você escolha
+\begin{itemize}
+ \item Plataforma (no nosso caso será 5 - PC)
+ \item Sistema Operacional (no nosso caso será 2 - linux)
+ \item Compilador Fortran (no nosso caso será 7 - GNU gfortran)
+ \item Compilador C (no nosso caso será 4 - g++)
+ \item Precisão (no nosso caso será D - double)
+ \item Tamanho (no nosso caso será L - large, com a mesma observação sobre o tamanho.)
+\end{itemize}
+Quando necessário, aperte enter para confirmar a continuação do programa. Se tudo deu
+certo, o CUTEr deve estar instalado. Caso tenha acontecido algum erro, reveja as variáveis
+e volte os passos. Pode ser necessário apagar tudo que você baixou e baixar novamente (em 
+último caso). Para verificar que realmente está tudo funcionando, faça
+\begin{verbatim}
+$ mkdir -p $HOME/libraries/CUTEr/Testing
+$ cd $HOME/libraries/CUTEr/Testing
+$ runcuter -p gen -D ROSENBR
+\end{verbatim}
+Se nenhum erro aparecer, e aparecer várias informações do problema, então o
+CUTEr foi instalado corretamente. Agora vamos criar algumas interfaces de exemplo.
+
+
+Referências
+
+[1] http://cuter.rl.ac.uk/cuter-www 
+[2] https://magi-trac-svn.mathappl.polymtl.ca/Trac/cuter 
+[3] http://www.math.utep.edu/Student/rsanchez/files/CUTErManual.pdf
+
+\end{document}
