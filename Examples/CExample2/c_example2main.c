@@ -1,16 +1,13 @@
 #include "cuter.h"
-#include "CExample1/steepest_descent.h"
+#include "CExample2/steepest_descent.h"
 
-double objfun (double * x, unsigned int n) {
-  double F = 0;
-  int N = n;
-  UFN(&N, x, &F);
-  return F;
+void ufn (int * n, double * x, double * f) {
+  UFN(n, x, f);
 }
 
-void gradfun (double * x, unsigned int n, double * g) {
-  int N = n;
-  UGR(&N, x, g);
+void uofg (int * n, double * x, double * f, double * g, long int * grad) {
+  logical GRAD = *grad;
+  UOFG(n, x, f, g, &GRAD);
 }
 
 int MAINENTRY () {
