@@ -57,27 +57,19 @@ pasta para o CUTEr dentro dessa pasta. Ajuste os comandos de acordo com sua esco
 $ mkdir -p $HOME/libraries/CUTEr
 $ cd $HOME/libraries/CUTEr
 \end{verbatim}
-Agora faça o download do SifDec2 e do CUTEr2 pelo svn, usando os comandos{\color{red} *}
+Agora faça o download do SifDec2 pelo comando a seguir
 \small
 \begin{verbatim}
-$ svn co https://magi-trac-svn.mathappl.polymtl.ca/SVN/cuter/sifdec/branches/SifDec2 ./sifdec2 
-$ svn co https://magi-trac-svn.mathappl.polymtl.ca/SVN/cuter/cuter/branches/CUTEr64 ./cuter2
+$ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/sifdec/branches/SifDec2 ./sifdec2
 \end{verbatim}
-{\color{red}*Obs: Na última vez que tentei, o site estava fora do ar. Subi no site do LPOO
-uma cópia da minha última versão, em 64 bits, de alguns meses. Os comandos para baixar e
- descompactar
-essa versão são:
+E você precisa baixar o CUTEr2 agora. Se quiser a versão 32 bits:
 \begin{verbatim}
-$ wget www.lpoo.ime.unicamp.br/CUTEr/sifdec2.tar.gz
-$ wget www.lpoo.ime.unicamp.br/CUTEr/cuter2.tar.gz
-$ tar -zxf sifdec2.tar.gz
-$ tar -zxf cuter2.tar.gz
+$ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/cuter/branches/CUTEr2 ./cuter2
 \end{verbatim}
-Se você precisar da versão em 32 bits, rode o seguinte comando na pasta atualmente
+E a versão 64 bits:
 \begin{verbatim}
-$ sed -i 's/-m64//g' cuter2/config/{mac,all,linux}.cf
+$ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/cuter/branches/CUTEr64 ./cuter2
 \end{verbatim}
-}
 \normalsize
 Faça o download da coleção de problemas SIF na página
 \begin{verbatim}
@@ -556,8 +548,6 @@ $ runcuter -p c_example# -D BARD
 onde \# é o número do exemplo e BARD é um dos problemas em que esse exemplo converge. Note
 que é preferível criar uma pasta separada para rodar os testes, já que eles geram lixo na
 pasta.
-
-
 
 \subsection{Exemplos em C++}
 
