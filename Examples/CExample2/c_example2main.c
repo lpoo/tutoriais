@@ -6,8 +6,7 @@ void ufn (int * n, double * x, double * f) {
 }
 
 void uofg (int * n, double * x, double * f, double * g, long int * grad) {
-  logical GRAD = *grad;
-  UOFG(n, x, f, g, &GRAD);
+  UOFG(n, x, f, g, grad);
 }
 
 int MAINENTRY () {
