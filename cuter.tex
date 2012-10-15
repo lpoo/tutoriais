@@ -187,13 +187,386 @@ $ cd $HOME/libraries/CUTEr/Testing
 $ runcuter -p gen -D ROSENBR
 \end{verbatim}
 Se nenhum erro aparecer, e aparecer várias informações do problema, então o
-CUTEr foi instalado corretamente. Agora vamos criar algumas interfaces de exemplo.
+CUTEr foi instalado corretamente.
+
+\section{Interface}
+
+A biblioteca CUTEr dá ao usuário um conjunto de funções para receber informações do problema.
+As funções são separadas para o caso irrestrito (precedidas pela letra \emph{U}) ou
+restrito, (precedidas pela letra \emph{C}). Se o usuário necessitar do valor da funcão
+ objetivo num ponto dado, ele pode chamar \verb+UFN+ se o problema for irrestrito, ou
+\verb+CFN+ caso contrário. Note que a sintaxe das funções não é a mesma, pois o CUTEr tenta
+ser o mais prático possível. A sintaxe dessas funcões é
+\begin{itemize}
+ \item \verb+UFN (N, X, F)+, onde \verb+N+ é um inteiro indicando o número de 
+variáveis do problema, \verb+X+ é um vetor de
+reais, e \verb+F+ é real que sai com o valor da função objetivo.
+ \item \verb+CFN (N, M, X, F, LC, C)+, onde \verb+N+,\verb+X+ e \verb+F+ indicam as
+mesmas coisas, \verb+M+ é um inteiro indicando o número de restrições, \verb+C+ é um
+vetor de reais, com os valores das restrições e \verb+LC+ é a dimensão real de \verb+C+,
+que deve ser maior ou igual a \verb+M+.
+\end{itemize}
+Existem muitas outras funções para interação com o problema. Elas podem ser vistas na
+documentação do CUTEr no arquivo \verb+general.pdf+ dentro da pasta
+\verb+$CUTER/common/doc+ nas páginas 31 e 32.
+
+Para rodar nossa biblioteca com o CUTEr, é necessário criar alguns arquivos extras.
+Um deles é o código que relaciona o nosso programa com essas funções do CUTEr. Além disso,
+também é necessário criar um arquivo que indica ao CUTEr quais as bibliotecas que nossa
+biblioteca precisa. A maneira tradicional de se trabalhar com o CUTEr (o novo CUTEr, pelo
+menos) é compilar nossa biblioteca inteira para um arquivo .a, compilar esse arquivo de
+ligação do CUTEr com nossa biblioteca, e passar tudo isso pro CUTEr. Quando necessário,
+rodamos o nosso pacote pelo comando do CUTEr \verb+runcuter+. Por exemplo, para rodar o
+pacote \verb+pack_exemplo+, usamos o comandos
+\begin{verbatim}
+$ runcuter -p pack_exemplo -D problema
+\end{verbatim}
+onde \verb+problema+ é um dos problemas do CUTEr sem a extensão \verb+.SIF+.
+
+\subsection{Instalação da interface}
+
+\section{Exemplos}
+
+Como exemplos do CUTEr, vamos criar bibliotecas em diversas linguagens para resolver o 
+problema de minimização irrestrita. 
+Vamos implementar o método de máxima descida com busca linear utilizando o
+critério de Armijo.
+
+Considere o problema
+\begin{equation}
+ \min f(x), \qquad x \in \Rn{n},
+\end{equation}
+onde $f:\RnemR{n}$ é contínua e derivável. Vamos procurar um ponto estacionário para esse
+problema, isto é, um ponto $x^* \in \Rn{n}$ tal que $$\nabla f(x^*) = 0.$$
+Obviamente, como vamos implementar este método, vamos parar quando encontrarmos um
+iterando $x^k$ tal que $\norma{\nabla f(x^k)} \leq \varepsilon,$ onde $\varepsilon > 0$ é
+dado. O método está descrito a seguir.
+\begin{algorithm}
+ \item Dados $x^0 \in \Rn{n}$, $\varepsilon > 0$, $\alpha \in (0,1)$, $k = 0$.
+ \item Enquanto $\norma{\nabla f(x^k)} > \varepsilon$ faça
+ \begin{algorithm} 
+  \item $d^k = -\nabla f(x^k)$
+  \item $\lambda_k = 1$
+  \item Enquanto $f(x^k + \lambda_kd^k) > f(x^k) + \alpha \lambda_k \nabla f(x^k)^Td^k$ faça
+  \begin{algorithm}
+   \item $\lambda_k = \lambda_k/2$
+  \end{algorithm}
+  \item $x^{k+1} = x^k + \lambda_kd^k$
+  \item $k = k + 1$
+ \end{algorithm}
+ \item $x^* = x^k$.
+\end{algorithm}
+Vamos implementar este método em algumas linguagens, e às vezes, mais de uma vezes, para
+exemplificar a interface CUTEr.
+
+\subsection{Exemplos em Fortran}
+
+Está faltando
+
+\subsection{Exemplos em C}
+
+Fizemos três implementações do método de máxima descida. A primeira é uma implementação
+que não leva me conta o CUTEr, e depois adapta o CUTEr para o problema. A segunda já leva
+em conta o formato das funções do CUTEr e faz pouca adaptação posteriormente. A terceira
+usa exatamente as funções do CUTEr, não necessitando de adaptação.
+
+Cada implementação do método de máxima descida consiste de dois arquivos:
+\verb+steepest_descent.h+ e \verb+steepest_descent.c+. No .h, definimos que funções
+iremos chamar, e uma estrutura com as informações da execução. As funções para a 
+primeira implementação são
+\begin{itemize}
+ \item \verb+double Norm (double * x, unsigned int n);+ \\
+Esta função calcula a norma 2 de um vetor \verb+x+ com tamanho \verb+n+.
+ \item \verb+double NormSqr (double * x, unsigned int n);+ \\
+Esta função calcula o quadrado da norma 2 de um vetor \verb+x+ com tamanho \verb+n+. É mais
+rápido que a função \verb+Norm+ pois não envolve raiz quadrada.
+ \item \verb+SteepestDescent (double * x, unsigned int n, Status * status);+ \\
+Esta é a função que encontra o ponto estacionário. \verb+x+ entra como ponto inicial e 
+sai como a solução. \verb+n+ é a dimensão do problema e \verb+status+ é um ponteiro para
+a estrutura de informações.
+ \item \verb+SD_Print (double * x, unsigned int n, Status * status);+ \\
+Esta função imprime o vetor \verb+x+ e as informações da execução do problema.
+\end{itemize}
+A estrutura do problema
+\begin{verbatim}
+typedef struct _Status {
+  unsigned int iter;
+  double f, ng;
+  unsigned int n_objfun, n_gradfun;
+} Status;
+\end{verbatim}
+\verb+iter+ é o número de iterações que o algoritmo executou, \verb+f+ é o valor da
+função objetivo na solução, \verb+ng+ é a norma do gradiente da função objetivo,
+\verb+n_objfun+ é o número de cálculos da função objetivo e \verb+n_gradfun+ é o número
+de cálculos do gradiente. Mostraremos as diferenças das outras implementações posteriormente.
+
+Nosso arquivo .c contém as definições das funções acima, e contém uma declaração de função
+usada para acessar a função objetivo e o gradiente. Na primeira implementação, essa declaração
+é
+\begin{verbatim}
+double objfun  (double * x, unsigned int n);
+void   gradfun (double * x, unsigned int n, double * g);
+\end{verbatim}
+As funções \verb+Norm+, \verb+NormSqr+ e \verb+SD_print+ são idênticas para todas as
+implementações e serão deixadas de fora. A implementação do método em si encontra-se abaixo.
+\scriptsize
+\begin{verbatim}
+void SteepestDescent (double * x, uint n, Status *status) { 
+  double * g, f, fp;
+  double * xp, lambda, ng_sqr;
+  uint i;
+
+  if ( (x == 0) || (status == 0) )
+    return;
+
+  g  = (double *) malloc(n * sizeof(double) );
+  xp = (double *) malloc(n * sizeof(double) );
+  status->iter = 0;
+  status->n_objfun = 0;
+  status->n_gradfun = 0;
+
+  f = objfun(x, n);
+  status->n_objfun++;
+  gradfun(x, n, g);
+  status->n_gradfun++;
+
+  status->ng = Norm(g, n);
+
+  while (status->ng > EPSILON) {
+    lambda = 1;
+
+    for (i = 0; i < n; i++) {
+      xp[i] = x[i] - g[i];
+    }
+
+    fp = objfun(xp, n);
+    status->n_objfun++;
+    ng_sqr = status->ng*status->ng;
+
+    while (fp > f - 0.5 * lambda * ng_sqr) {
+      for (i = 0; i < n; i++) {
+        xp[i] = x[i] - lambda*g[i];
+      }
+      lambda = lambda/2;
+      fp = objfun(xp, n);
+      status->n_objfun++;
+    }
+
+    for (i = 0; i < n; i++)
+      x[i] = xp[i];
+
+    f = objfun(x, n);
+    status->n_objfun++;
+    gradfun(x, n, g);
+    status->n_gradfun++;
+    status->ng = Norm(g, n);
+    status->iter++;
+  }
+
+  status->f = f;
+
+  free(xp);
+  free(g);
+}
+\end{verbatim}
+Um código de exemplo para esse teste é
+\begin{verbatim}
+#include <stdio.h>
+#include "steepest_descent.h"
+
+/*
+ * Each file testx.c is a different problem. The user will have to
+ * implement his own file, defining objfun and gradfun.
+ */
+
+/*
+ * This problem is
+ *
+ *  min f(x) = 0.5*(x_1^2 + x_2^2)
+ *
+ *  starting from point x0 = (1,2);
+ *
+ */
+
+double objfun (double * x, unsigned int n) {
+  (void)n;
+  return 0.5 * (x[0]*x[0] + x[1]*x[1]);
+}
+
+void gradfun (double * x, unsigned int n, double * g) {
+  unsigned int i;
+
+  for (i = 0; i < n; i++)
+    g[i] = x[i];
+}
+
+int main () {
+  double x[2];
+  Status status;
+
+  x[0] = 1;
+  x[1] = 2;
+
+  SteepestDescent(x, 2, &status);
+
+  SD_Print(x, 2, &status);
+
+  return 0;
+}
+\end{verbatim}
+Este código implementa o problema de minimizar $f(x) = \meio\norma{x}^2$ em duas dimensões.
+Note como temos que declarar as funções \verb+objfun+ e \verb+gradfun+. Sem elas teríamos
+erros na compilação. Veja os arquivos \verb+test2.c+ e \verb+test3.c+
+para outros exemplos.
+
+A interface para o CUTEr é o arquivo \verb+c_example1main.c+:
+\begin{verbatim}
+#include "cuter.h"
+#include "CExample1/steepest_descent.h"
+
+double objfun (double * x, unsigned int n) {
+  double F = 0;
+  int N = n;
+  UFN(&N, x, &F);
+  return F;
+}
+
+void gradfun (double * x, unsigned int n, double * g) {
+  int N = n;
+  UGR(&N, x, g);
+}
+
+int MAINENTRY () {
+  double *x, *bl, *bu;
+  char fname[10] = "OUTSDIF.d";
+  int nvar = 0, ncon = 0, nmax;
+  int funit = 42, ierr = 0, fout = 6;
+  int i;
+  Status status;
+
+  FORTRAN_OPEN(&funit, fname, &ierr);
+  CDIMEN(&funit, &nvar, &ncon);
+
+  if (ncon > 0) {
+    printf("ERROR: Problem is not unconstrained\n");
+    return 1;
+  }
+
+  x  = (double *) malloc (sizeof(double) * nvar);
+  bl = (double *) malloc (sizeof(double) * nvar);
+  bu = (double *) malloc (sizeof(double) * nvar);
+
+  USETUP(&funit, &fout, &nvar, x, bl, bu, &nmax);
+
+  for (i = 0; i < nvar; i++) {
+    if ( (bl[i] > -CUTE_INF) || (bu[i] < CUTE_INF) ) {
+      printf("ERROR: Problem has bounds\n");
+      return 1;
+    }
+  }
+
+  SteepestDescent(x, nvar, &status);
+
+  SD_Print(x, nvar, &status);
+
+  free(x);
+  free(bl);
+  free(bu);
+
+  return 0;
+}
+\end{verbatim}
+Note que também é necessário definir as funções \verb+objfun+ e \verb+gradfun+. Essas
+funções, por sua vez, chamam as funções correspondentes em CUTEr para esse serviço.
+A função \verb+UFN+ calcula o valor da função objetivo e a função \verb+UGR+ calcula
+o valor do gradiente. Note que quando compilamos uma função em Fortran, ele recebe um
+nome em letras minúsculas e com um \_ (underline) na frente (no caso do gfortran. Outros
+compiladores podem divergir). O arquivo \verb+cuter.h+ define macros para todas as funções
+do CUTEr serem chamados com letras maiúsculas. Note ainda que a função \verb+UFN+ recebe
+um ponteiro para \verb+int+ e dois ponteiros para \verb+double+, sendo o primeiro para o
+vetor $x$ e o segundo para o valor da função objetivo. As funções do CUTEr para C recebem
+ponteiros em todos os valores. Os valores que são vetores não precisam de um ponteiro 
+adicional. Note também que como utilizamos \verb+unsigned int+ para os tamanhos, tivemos
+que converter os valores para \verb+int+.
+
+Veja agora o Exemplo 2. Nesse exemplo consideramos que as funções devem estar no mesmo
+formato que a função do CUTEr.
+\begin{verbatim}
+void ufn (int * n, double * x, double * f);
+void uofg (int * n, double * x, double * f, double * g, long int * grad);
+\end{verbatim}
+O nome das funções foram escolhidas para seguir exatamente o formato do CUTEr, mas aqui
+elas poderiam ser qualquer coisa. Note que a função \verb+uofg+ foi utilizada no lugar
+da função \verb+ugr+. Essa função já calcula a função objetivo e o gradiente, sendo mais
+rápida que chamadas individuais. Com essa mudança, esse programa é levemente mais rápido
+que o outro. O resto do arquivo foi mudado de acordo a seguir essas mudanças.
+
+A interface também teve uma mudança na definição das funções:
+\begin{verbatim}
+void ufn (int * n, double * x, double * f) {
+  UFN(n, x, f);
+}
+
+void uofg (int * n, double * x, double * f, double * g, long int * grad) {
+  UOFG(n, x, f, g, grad);
+}
+\end{verbatim}
+Essa interface fica muito mais natural de ser utilizada num problema com CUTEr. Não precisamos
+converter nenhuma variável, simplesmente fazer a chamada da função com os parâmetros já dados.
+Note, no entanto, que estamos utilizando \verb+long int+ para as variáveis lógicas do CUTEr.
+Essa é uma definição do arquivo \verb+cuter.h+. Se mudarmos essa definição, então devemos
+criar uma variável \verb+logical GRAD = *grad+ e chamar a função com
+\verb+UOFG(n, x, f, g, &GRAD)+.
+
+A última interface já declara as funções que o CUTEr irá definir. Então no arquivo .c temos
+\begin{verbatim}
+void ufn_ (int * n, double * x, double * f);
+void uofg_ (int * n, double * x, double * f, double * g, long int * grad);
+\end{verbatim}
+e no arquivo da interface não temos nenhuma definição de função. Lembre-se que o Fortran
+compilado com gfortran cria as funções com minúsculas e \_ na frente. Se mudarmos o
+compilador pode não funcionar. 
+Além disso, a definição dessas funções é, na verdade
+\begin{verbatim}
+void UFN( integer *n, doublereal *x, doublereal *f );
+void UOFG( integer *n, doublereal *x, doublereal *f, doublereal *g,
+      logical *grad);
+\end{verbatim}
+e esses tipos são definidos no arquivo \verb+cuter.h+, podendo ser alterados pelo usuário.
+Se isso acontecer, é necessário mudar todo o programa.
+
+Uma alternativa é utilizar \verb+typedef+s para definir os tipos próprios, e deixar o
+acesso desses tipos para o usuário (assim como o arquivo \verb+cuter.h+). Dessa maneira,
+se o usuário tiver necessidade de mudar o arquivo \verb+cuter.h+, ele também pode (deve)
+mudar o arquivo com esses \verb+typedef+s.
+
+Para compilar a interface CUTEr dos testes utilize
+\begin{verbatim}
+$ make cuter
+\end{verbatim}
+Para rodar os testes utilize o comando
+\begin{verbatim}
+$ runcuter -p c_example# -D BARD
+\end{verbatim}
+onde \# é o número do exemplo e BARD é um dos problemas em que esse exemplo converge. Note
+que é preferível criar uma pasta separada para rodar os testes, já que eles geram lixo na
+pasta.
 
 
-Referências
 
-[1] http://cuter.rl.ac.uk/cuter-www 
-[2] https://magi-trac-svn.mathappl.polymtl.ca/Trac/cuter 
-[3] http://www.math.utep.edu/Student/rsanchez/files/CUTErManual.pdf
+\subsection{Exemplos em C++}
+
+\subsection{Exemplos em Matlab}
+
+Está faltando.
+
+\subsection{Exemplos em Python}
+
+Está faltando.
+
+\begin{thebibliography}{3}
+\bibitem{bib:cuter1} http://cuter.rl.ac.uk/cuter-www 
+\bibitem{bib:cuter2} https://magi-trac-svn.mathappl.polymtl.ca/Trac/cuter 
+\end{thebibliography}
 
 \end{document}
