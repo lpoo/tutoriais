@@ -369,7 +369,9 @@ void SteepestDescent (double * x, uint n, Status *status) {
   free(g);
 }
 \end{verbatim}
+\normalsize
 Um código de exemplo para esse teste é
+\scriptsize
 \begin{verbatim}
 #include <stdio.h>
 #include "steepest_descent.h"
@@ -414,12 +416,14 @@ int main () {
   return 0;
 }
 \end{verbatim}
+\normalsize
 Este código implementa o problema de minimizar $f(x) = \meio\norma{x}^2$ em duas dimensões.
 Note como temos que declarar as funções \verb+objfun+ e \verb+gradfun+. Sem elas teríamos
 erros na compilação. Veja os arquivos \verb+test2.c+ e \verb+test3.c+
 para outros exemplos.
 
 A interface para o CUTEr é o arquivo \verb+c_example1main.c+:
+\scriptsize
 \begin{verbatim}
 #include "cuter.h"
 #include "CExample1/steepest_descent.h"
@@ -476,6 +480,7 @@ int MAINENTRY () {
   return 0;
 }
 \end{verbatim}
+\normalsize
 Note que também é necessário definir as funções \verb+objfun+ e \verb+gradfun+. Essas
 funções, por sua vez, chamam as funções correspondentes em CUTEr para esse serviço.
 A função \verb+UFN+ calcula o valor da função objetivo e a função \verb+UGR+ calcula
