@@ -3,7 +3,6 @@
 *.tst
 *.aux
 *.log
-*.pdf
 *.backup
 *.swp
 *.toc
