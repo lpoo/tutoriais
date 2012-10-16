@@ -1,0 +1,29 @@
+F = gfortran
+FFLAGS = -ggdb
+PACKNAME = gradient
+
+OBJS = gradient.o gradientmain.o
+TESTS = test1.tst test2.tst test3.tst test4.tst
+
+all: clean $(OBJS)
+
+run: $(OBJS) $(TESTS)
+	for file in $$(ls *.tst); do ./$$file; done
+
+cuter: $(PACKNAME)main.o
+	cp -f $(PACKNAME).sh.pro $(CUTER)/build/prototypes/$(PACKNAME).sh.pro
+	sed -f $(MYCUTER)/double/config/script.sed $(PACKNAME).sh.pro > $(MYCUTER)/bin/$(PACKNAME)
+	chmod a+x $(MYCUTER)/bin/$(PACKNAME)
+	cp -f $(PACKNAME)main.c $(MYCUTER)/double/bin/$(PACKNAME)ma.c
+	cp -f $(PACKNAME)main.o $(MYCUTER)/double/bin/$(PACKNAME)ma.o
+
+clean:
+	rm -f $(OBJS) $(TESTS)
+
+purge: clean
+
+%.o: %.f
+	$(F) -c -o $@ $< $(FFLAGS)
+
+%.tst: %.f
+	$(F) -o $@ $< $(FFLAGS) $(OBJS)
