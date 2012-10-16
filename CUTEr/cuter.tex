@@ -17,7 +17,6 @@
 \setlength{\textwidth}{16 cm}
 \setlength{\textheight}{21 cm}
 \usepackage{pnl}
-\defineshdwidth{0.1 cm}
 
 \title{Apostila de Instalação do CUTEr}
 \author{Abel Soares Siqueira}
@@ -53,52 +52,52 @@ Com os pacotes instalados, iremos criar uma pasta para o CUTEr. Você pode criar
 pasta separada no sistema ou instalar tudo no seu diretório principal. No meu caso,
 irei criar uma pasta chamada \verb+libraries+ na minha pasta pessoal, e criar uma
 pasta para o CUTEr dentro dessa pasta. Ajuste os comandos de acordo com sua escolha.
-\begin{verbatim}
+  \begin{terminal}
 $ mkdir -p $HOME/libraries/CUTEr
 $ cd $HOME/libraries/CUTEr
-\end{verbatim}
+\end{terminal}
 Agora faça o download do SifDec2 pelo comando a seguir
 \small
-\begin{verbatim}
+\begin{terminal}
 $ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/sifdec/branches/SifDec2 ./sifdec2
-\end{verbatim}
+\end{terminal}
 E você precisa baixar o CUTEr2 agora. Se quiser a versão 32 bits:
-\begin{verbatim}
+\begin{terminal}
 $ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/cuter/branches/CUTEr2 ./cuter2
-\end{verbatim}
+\end{terminal}
 E a versão 64 bits:
-\begin{verbatim}
+\begin{terminal}
 $ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/cuter/branches/CUTEr64 ./cuter2
-\end{verbatim}
+\end{terminal}
 \normalsize
 Faça o download da coleção de problemas SIF na página
 \begin{verbatim}
 http://cuter.rl.ac.uk/cuter-www/Problems/mastsif.shtml
 \end{verbatim}
 ou use os comandos
-\begin{verbatim}
+\begin{terminal}
 $ wget ftp://ftp.numerical.rl.ac.uk/pub/cuter/mastsif_small.tar.gz 
 $ wget ftp://ftp.numerical.rl.ac.uk/pub/cuter/mastsif_large.tar.gz
-\end{verbatim}
+\end{terminal}
 Descompacte os problemas pequenos com o comando
-\begin{verbatim}
+\begin{terminal}
 $ tar -zxvf mastsif_small.tar.gz 
-\end{verbatim}
+\end{terminal}
 Se quiser, descompacte os problemas grandes também. Note que estes problemas são
 muito mais pesados que os pequenos, então aconselho baixá-los apenas se for necessário.
-\begin{verbatim}
+\begin{terminal}
 $ tar -zxvf mastsif_large.tar.gz
-\end{verbatim}
+\end{terminal}
 Iremos começar a instalar o CUTEr. Para isso, vamos instalar o decodificador
 dos problemas SIF (que faz parte da biblioteca CUTEr).
 Entre na pasta \verb+sifdec2+ criada em \verb+$HOME/libraries/CUTEr+.
-\begin{verbatim}
+\begin{terminal}
 $ cd $HOME/libraries/CUTEr/sifdec2
-\end{verbatim}
+\end{terminal}
 Agora digite o comando
-\begin{verbatim}
+\begin{terminal}
 $ ./install_sifdec
-\end{verbatim}
+\end{terminal}
 A instalação do sifdec irá pedir que você escolha
 \begin{itemize}
  \item Plataforma (no nosso caso será 5 - PC)
@@ -110,18 +109,18 @@ dependendo do software e dos testes que você utilizará. Nesse caso edite o arq
 \verb+build/arch/size.custom+ antes de continuar.)
 \end{itemize}
 O instalador vai lançar a mensagem
-\begin{verbatim}
+\begin{terminal}
  By default, SifDec with your selections will be installed in
   /home/abel/libraries/CUTEr/sifdec2/SifDec.large.pc.lnx.gfo
  Is this OK (Y/n)?
-\end{verbatim}
+\end{terminal}
 Anote o nome do diretório que será criado e aperte enter. No nosso caso, será \\
  \verb+SifDec.large.pc.lnx.gfo+. Para a próxima mensagem, escreva `n' e aperte enter.
 
 Agora vamos acrescentar as variáveis de sistema para que o instalador e os softwares
 que formos utilizar saibam onde está o CUTEr. Edite o arquivo \verb+$HOME/.bashrc+ e
 adicione as seguintes linhas
-\begin{verbatim}
+\begin{terminal}
 ROOTCUTER="$HOME/libraries/CUTEr"
 export CUTER="$ROOTCUTER/cuter2"
 export MYCUTER="$CUTER/CUTEr.large.pc.lnx.gfo" 
@@ -130,36 +129,36 @@ export MYSIFDEC="$SIFDEC/SifDec.large.pc.lnx.gfo"
 export MASTSIF="$ROOTCUTER/mastsif" 
 export MANPATH="$CUTER/common/man:$SIFDEC/common/man:$MANPATH" 
 export PATH="$MYCUTER/bin:$MYSIFDEC/bin:$PATH"
-\end{verbatim}
+\end{terminal}
 Se for necessário, mude a variável \verb+ROOTCUTER+, e o diretório que eu mandei anotar. 
 Note que já criamos um diretório para o CUTEr, supondo que ele siga as mesmas opções
 que o SifDec. 
 Para que essas mudanças façam efeito é necessário usar o comando
-\begin{verbatim}
+\begin{terminal}
 $ source $HOME/.bashrc
-\end{verbatim}
+\end{terminal}
 ou reiniciar o terminal.
 Agora entre na pasta que criamos anteriormente. Para isso basta fazer
-\begin{verbatim}
+\begin{terminal}
 $ cd $MYSIFDEC
-\end{verbatim}
+\end{terminal}
 Se deu algum erro, você pode ter errado o nome na definição da variável. Verifique que a
 pasta realmente existe e refaça os passos se necessário.
 
 Agora rode o comando
-\begin{verbatim}
+\begin{terminal}
 $ ./install_mysifdec
-\end{verbatim}
+\end{terminal}
 Ao final desse comando, a frase
-\begin{verbatim}
+\begin{terminal}
 install_mysifdec : Do you want to 'make all' in
  /home/abel/libraries/CUTEr/sifdec2/SifDec.large.pc.lnx.gfo now (Y/n)?
-\end{verbatim}
+\end{terminal}
 aparecerá. Aperte enter. Agora vamos instalar o CUTEr. Para isso, faça
-\begin{verbatim}
+\begin{terminal}
 $ cd $CUTER
 $ ./install_cuter
-\end{verbatim}
+\end{terminal}
 A instalação do cuter irá pedir que você escolha
 \begin{itemize}
  \item Plataforma (no nosso caso será 5 - PC)
@@ -173,11 +172,11 @@ Quando necessário, aperte enter para confirmar a continuação do programa. Se 
 certo, o CUTEr deve estar instalado. Caso tenha acontecido algum erro, reveja as variáveis
 e volte os passos. Pode ser necessário apagar tudo que você baixou e baixar novamente (em 
 último caso). Para verificar que realmente está tudo funcionando, faça
-\begin{verbatim}
+\begin{terminal}
 $ mkdir -p $HOME/libraries/CUTEr/Testing
 $ cd $HOME/libraries/CUTEr/Testing
 $ runcuter -p gen -D ROSENBR
-\end{verbatim}
+\end{terminal}
 Se nenhum erro aparecer, e aparecer várias informações do problema, então o
 CUTEr foi instalado corretamente.
 
@@ -210,9 +209,9 @@ menos) é compilar nossa biblioteca inteira para um arquivo .a, compilar esse ar
 ligação do CUTEr com nossa biblioteca, e passar tudo isso pro CUTEr. Quando necessário,
 rodamos o nosso pacote pelo comando do CUTEr \verb+runcuter+. Por exemplo, para rodar o
 pacote \verb+pack_exemplo+, usamos o comandos
-\begin{verbatim}
+\begin{terminal}
 $ runcuter -p pack_exemplo -D problema
-\end{verbatim}
+\end{terminal}
 onde \verb+problema+ é um dos problemas do CUTEr sem a extensão \verb+.SIF+.
 
 \subsection{Instalação da interface}
@@ -280,13 +279,13 @@ a estrutura de informações.
 Esta função imprime o vetor \verb+x+ e as informações da execução do problema.
 \end{itemize}
 A estrutura do problema
-\begin{verbatim}
+\begin{code}{C}
 typedef struct _Status {
   unsigned int iter;
   double f, ng;
   unsigned int n_objfun, n_gradfun;
 } Status;
-\end{verbatim}
+\end{code}
 \verb+iter+ é o número de iterações que o algoritmo executou, \verb+f+ é o valor da
 função objetivo na solução, \verb+ng+ é a norma do gradiente da função objetivo,
 \verb+n_objfun+ é o número de cálculos da função objetivo e \verb+n_gradfun+ é o número
@@ -295,14 +294,14 @@ de cálculos do gradiente. Mostraremos as diferenças das outras implementaçõe
 Nosso arquivo .c contém as definições das funções acima, e contém uma declaração de função
 usada para acessar a função objetivo e o gradiente. Na primeira implementação, essa declaração
 é
-\begin{verbatim}
+\begin{code}{C}
 double objfun  (double * x, unsigned int n);
 void   gradfun (double * x, unsigned int n, double * g);
-\end{verbatim}
+\end{code}
 As funções \verb+Norm+, \verb+NormSqr+ e \verb+SD_print+ são idênticas para todas as
 implementações e serão deixadas de fora. A implementação do método em si encontra-se abaixo.
 \scriptsize
-\begin{verbatim}
+\begin{code}{C}
 void SteepestDescent (double * x, uint n, Status *status) { 
   double * g, f, fp;
   double * xp, lambda, ng_sqr;
@@ -360,11 +359,11 @@ void SteepestDescent (double * x, uint n, Status *status) {
   free(xp);
   free(g);
 }
-\end{verbatim}
+\end{code}
 \normalsize
 Um código de exemplo para esse teste é
 \scriptsize
-\begin{verbatim}
+\begin{code}{C}
 #include <stdio.h>
 #include "steepest_descent.h"
 
@@ -407,7 +406,7 @@ int main () {
 
   return 0;
 }
-\end{verbatim}
+\end{code}
 \normalsize
 Este código implementa o problema de minimizar $f(x) = \meio\norma{x}^2$ em duas dimensões.
 Note como temos que declarar as funções \verb+objfun+ e \verb+gradfun+. Sem elas teríamos
@@ -416,7 +415,7 @@ para outros exemplos.
 
 A interface para o CUTEr é o arquivo \verb+c_example1main.c+:
 \scriptsize
-\begin{verbatim}
+\begin{code}{C}
 #include "cuter.h"
 #include "CExample1/steepest_descent.h"
 
@@ -471,7 +470,7 @@ int MAINENTRY () {
 
   return 0;
 }
-\end{verbatim}
+\end{code}
 \normalsize
 Note que também é necessário definir as funções \verb+objfun+ e \verb+gradfun+. Essas
 funções, por sua vez, chamam as funções correspondentes em CUTEr para esse serviço.
@@ -488,10 +487,10 @@ que converter os valores para \verb+int+.
 
 Veja agora o Exemplo 2. Nesse exemplo consideramos que as funções devem estar no mesmo
 formato que a função do CUTEr.
-\begin{verbatim}
+\begin{code}{C}
 void ufn (int * n, double * x, double * f);
 void uofg (int * n, double * x, double * f, double * g, long int * grad);
-\end{verbatim}
+\end{code}
 O nome das funções foram escolhidas para seguir exatamente o formato do CUTEr, mas aqui
 elas poderiam ser qualquer coisa. Note que a função \verb+uofg+ foi utilizada no lugar
 da função \verb+ugr+. Essa função já calcula a função objetivo e o gradiente, sendo mais
@@ -499,7 +498,7 @@ rápida que chamadas individuais. Com essa mudança, esse programa é levemente 
 que o outro. O resto do arquivo foi mudado de acordo a seguir essas mudanças.
 
 A interface também teve uma mudança na definição das funções:
-\begin{verbatim}
+\begin{code}{C}
 void ufn (int * n, double * x, double * f) {
   UFN(n, x, f);
 }
@@ -507,7 +506,7 @@ void ufn (int * n, double * x, double * f) {
 void uofg (int * n, double * x, double * f, double * g, long int * grad) {
   UOFG(n, x, f, g, grad);
 }
-\end{verbatim}
+\end{code}
 Essa interface fica muito mais natural de ser utilizada num problema com CUTEr. Não precisamos
 converter nenhuma variável, simplesmente fazer a chamada da função com os parâmetros já dados.
 Note, no entanto, que estamos utilizando \verb+long int+ para as variáveis lógicas do CUTEr.
@@ -516,19 +515,19 @@ criar uma variável \verb+logical GRAD = *grad+ e chamar a função com
 \verb+UOFG(n, x, f, g, &GRAD)+.
 
 A última interface já declara as funções que o CUTEr irá definir. Então no arquivo .c temos
-\begin{verbatim}
+\begin{code}{C}
 void ufn_ (int * n, double * x, double * f);
 void uofg_ (int * n, double * x, double * f, double * g, long int * grad);
-\end{verbatim}
+\end{code}
 e no arquivo da interface não temos nenhuma definição de função. Lembre-se que o Fortran
 compilado com gfortran cria as funções com minúsculas e \_ na frente. Se mudarmos o
 compilador pode não funcionar. 
 Além disso, a definição dessas funções é, na verdade
-\begin{verbatim}
+\begin{code}{Fortran}
 void UFN( integer *n, doublereal *x, doublereal *f );
 void UOFG( integer *n, doublereal *x, doublereal *f, doublereal *g,
       logical *grad);
-\end{verbatim}
+\end{code}
 e esses tipos são definidos no arquivo \verb+cuter.h+, podendo ser alterados pelo usuário.
 Se isso acontecer, é necessário mudar todo o programa.
 
@@ -538,13 +537,13 @@ se o usuário tiver necessidade de mudar o arquivo \verb+cuter.h+, ele também p
 mudar o arquivo com esses \verb+typedef+s.
 
 Para compilar a interface CUTEr dos testes utilize
-\begin{verbatim}
+\begin{terminal}
 $ make cuter
-\end{verbatim}
+\end{terminal}
 Para rodar os testes utilize o comando
-\begin{verbatim}
+\begin{terminal}
 $ runcuter -p c_example# -D BARD
-\end{verbatim}
+\end{terminal}
 onde \# é o número do exemplo e BARD é um dos problemas em que esse exemplo converge. Note
 que é preferível criar uma pasta separada para rodar os testes, já que eles geram lixo na
 pasta.
