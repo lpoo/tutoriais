@@ -16,7 +16,7 @@ export PACK_PRECISION="double"
 # ${MYCUTER}/(precision)/bin
 export PACKOBJS=""
 
-export PACKLIBS="/home/abel/Tutoriais/CUTEr/Examples/CExample3/steepest_descent.o"
+export PACKLIBS="/home/abel/Tutoriais/tutoriais-lpoo/CUTEr/Examples/CExample3/steepest_descent.o"
 
 # Define the name of the package specification file if any. This possibly
 # precision-dependent file must either lie in the current directory or in

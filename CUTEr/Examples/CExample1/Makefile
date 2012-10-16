@@ -10,7 +10,7 @@ run: $(OBJS) $(TESTS)
 	for file in $$(ls *.tst); do ./$$file; done
 
 cuter: c_example1main.o
-	cp -f c_example1.sh.pro $(CUTER)/build/prototypes/dcicpp.sh.pro
+	cp -f c_example1.sh.pro $(CUTER)/build/prototypes/c_example1.sh.pro
 	sed -f $(MYCUTER)/double/config/script.sed c_example1.sh.pro > $(MYCUTER)/bin/c_example1
 	chmod a+x $(MYCUTER)/bin/c_example1
 	cp -f c_example1main.c $(MYCUTER)/double/bin/c_example1ma.c

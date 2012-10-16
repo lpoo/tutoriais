@@ -9,9 +9,9 @@
 /*
  * This problem is
  *
- *  min f(x) = 2*x_1^2 + x_2^2
+ *  min f(x) = 3*x_1^2 + x_2^2
  *
- *  starting from point x0 = (2,2);
+ *  starting from point x0 = (2,10);
  *
  */
 
