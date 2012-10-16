@@ -11,16 +11,16 @@
  *
  *  min f(x) = 2*x_1^2 + x_2^2
  *
- *  starting from point x0 = (2,2);
+ *  starting from pomy_integer x0 = (2,2);
  *
  */
 
-void ufn_ (int * n, double * x, double * f) {
+void ufn_ (my_integer * n, my_doublereal * x, my_doublereal * f) {
   (void)n;
   *f = 3*x[0]*x[0] + x[1]*x[1];
 }
 
-void uofg_ (int * n, double * x, double * f, double * g, long int * grad) {
+void uofg_ (my_integer * n, my_doublereal * x, my_doublereal * f, my_doublereal * g, my_logical * grad) {
   (void)n;
 
   *f = 3*x[0]*x[0] + x[1]*x[1];
@@ -30,8 +30,8 @@ void uofg_ (int * n, double * x, double * f, double * g, long int * grad) {
   g[1] = 2*x[1];
 }
 
-int main () {
-  double x[2];
+my_integer main () {
+  my_doublereal x[2];
   Status status;
 
   x[0] = 2;

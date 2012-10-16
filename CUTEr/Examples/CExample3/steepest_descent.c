@@ -6,12 +6,12 @@
  * These functions are necessary for the software. They must be
  * implemented in a separate file by the user.
  */
-void ufn_ (int * n, double * x, double * f);
-void uofg_ (int * n, double * x, double * f, double * g, long int * grad);
+void ufn_ (my_integer * n, my_doublereal * x, my_doublereal * f);
+void uofg_ (my_integer * n, my_doublereal * x, my_doublereal * f, my_doublereal * g, my_logical * grad);
 
-double Norm (double * x, int n) {
-  int i;
-  double s = 0.0;
+my_doublereal Norm (my_doublereal * x, my_integer n) {
+  my_integer i;
+  my_doublereal s = 0.0;
 
   for (i = 0; i < n; i++)
     s += x[i]*x[i];
@@ -19,9 +19,9 @@ double Norm (double * x, int n) {
   return sqrt(s);
 }
 
-double NormSqr (double * x, int n) {
-  int i;
-  double s = 0.0;
+my_doublereal NormSqr (my_doublereal * x, my_integer n) {
+  my_integer i;
+  my_doublereal s = 0.0;
 
   for (i = 0; i < n; i++)
     s += x[i]*x[i];
@@ -29,17 +29,18 @@ double NormSqr (double * x, int n) {
   return s;
 }
 
-void SteepestDescent (double * x, int n, Status *status) { 
-  double * g, f, fp;
-  double * xp, lambda, ng_sqr;
-  int i;
-  long int one = 1;
+void SteepestDescent (my_doublereal * x, my_integer n, Status *status) { 
+  my_doublereal * g, f, fp;
+  my_doublereal * xp, lambda, ng_sqr;
+  my_doublereal alpha = 1e-4;
+  my_integer i, maxiter = 1e4;
+  my_logical one = 1;
 
   if ( (x == 0) || (status == 0) )
     return;
 
-  g  = (double *) malloc(n * sizeof(double) );
-  xp = (double *) malloc(n * sizeof(double) );
+  g  = (my_doublereal *) malloc(n * sizeof(my_doublereal) );
+  xp = (my_doublereal *) malloc(n * sizeof(my_doublereal) );
   status->iter = 0;
   status->n_objfun = 0;
   status->n_gradfun = 0;
@@ -61,7 +62,7 @@ void SteepestDescent (double * x, int n, Status *status) {
     status->n_objfun++;
     ng_sqr = status->ng*status->ng;
 
-    while (fp > f - 0.5 * lambda * ng_sqr) {
+    while (fp > f - alpha * lambda * ng_sqr) {
       for (i = 0; i < n; i++) {
         xp[i] = x[i] - lambda*g[i];
       }
@@ -78,6 +79,8 @@ void SteepestDescent (double * x, int n, Status *status) {
     status->n_gradfun++;
     status->ng = Norm(g, n);
     status->iter++;
+    if (status->iter >= maxiter)
+      break;
   }
 
   status->f = f;
@@ -86,8 +89,8 @@ void SteepestDescent (double * x, int n, Status *status) {
   free(g);
 }
                     
-void SD_Print (double * x, int n, Status * status) {
-  int i;
+void SD_Print (my_doublereal * x, my_integer n, Status * status) {
+  my_integer i;
 
   if ( (x == 0) || (status == 0) )
     return;

@@ -34,6 +34,8 @@ double NormSqr (double * x, uint n) {
 void SteepestDescent (double * x, uint n, Status *status) { 
   double * g, f, fp;
   double * xp, lambda, ng_sqr;
+  double alpha = 1e-4;
+  uint maxiter = 1e4;
   uint i;
 
   if ( (x == 0) || (status == 0) )
@@ -63,7 +65,7 @@ void SteepestDescent (double * x, uint n, Status *status) {
     status->n_objfun++;
     ng_sqr = status->ng*status->ng;
 
-    while (fp > f - 0.5 * lambda * ng_sqr) {
+    while (fp > f - alpha * lambda * ng_sqr) {
       for (i = 0; i < n; i++) {
         xp[i] = x[i] - lambda*g[i];
       }
@@ -81,6 +83,8 @@ void SteepestDescent (double * x, uint n, Status *status) {
     status->n_gradfun++;
     status->ng = Norm(g, n);
     status->iter++;
+    if (status->iter >= maxiter)
+      break;
   }
 
   status->f = f;
