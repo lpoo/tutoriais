@@ -1,0 +1,144 @@
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{shadethm}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage[dvipsnames]{color}
+\usepackage{framed}
+
+\newshadetheorem{theorem}{Teorema}[section]
+\newshadetheorem{lemma}[theorem]{Lema}
+\newshadetheorem{corolary}[theorem]{Corolário}
+\newshadetheorem{proposition}[theorem]{Proposição}
+
+\theoremstyle{definition}
+\setlength{\shadeboxrule}{.4pt}
+\newcommand{\defineshdwidth}[1]{
+\setlength{\shadedtextwidth}{\textwidth}
+\addtolength{\shadedtextwidth}{-#1}
+\addtolength{\shadedtextwidth}{-#1}
+\setlength{\shadeleftshift}{#1}
+}
+
+\newshadetheorem{definition}[theorem]{Definição}
+\newshadetheorem{example}{Exemplo}[section]
+
+\newcommand{\theorembegin}[1]{
+\definecolor{shadethmcolor}{HTML}{FFEEEE}
+\definecolor{shaderulecolor}{HTML}{AA0000}
+\begin{theorem}[#1]}
+\newcommand{\theoremend}{\end{theorem}}
+
+\newcommand{\lemmabegin}[1]{
+\definecolor{shadethmcolor}{HTML}{FFEEEE}
+\definecolor{shaderulecolor}{HTML}{AA0000}
+\begin{lemma}[#1]}
+\newcommand{\lemmaend}{\end{lemma}}
+
+\newcommand{\corolarybegin}[1]{
+\definecolor{shadethmcolor}{HTML}{FFEEEE}
+\definecolor{shaderulecolor}{HTML}{AA0000}
+\begin{corolary}[#1]}
+\newcommand{\corolaryend}{\end{corolary}}
+
+\newcommand{\propositionbegin}[1]{
+\definecolor{shadethmcolor}{HTML}{FFEEEE}
+\definecolor{shaderulecolor}{HTML}{AA0000}
+\begin{proposition}[#1]}
+\newcommand{\propositionend}{\end{proposition}}
+
+\newcommand{\definitionbegin}[1]{
+\definecolor{shadethmcolor}{HTML}{DDDDDD}
+\definecolor{shaderulecolor}{HTML}{000000}
+\begin{definition}[#1]}
+\newcommand{\definitionend}{\end{definition}}
+
+\newcommand{\examplebegin}{
+\definecolor{shadethmcolor}{HTML}{EEFFFF}
+\definecolor{shaderulecolor}{HTML}{00AAAA}
+\begin{example}}
+\newcommand{\exampleend}{\end{example}}
+
+\newcommand{\proofbegin}{
+\definecolor{shadethmcolor}{HTML}{EEFFEE}
+\definecolor{shaderulecolor}{HTML}{00AA00}
+\begin{shadebox}
+\begin{proof}}
+\newcommand{\proofend}{\end{proof}\end{shadebox}}
+
+%\newenvironment{proof}[1][Demonstração:]{\begin{trivlist}
+  %\item[\hskip \labelsep {\bfseries #1}]}{\begin{flushright}$\blacksquare$\end{flushright}\end{trivlist}}
+
+\newenvironment{algorithm}{
+\begin{enumerate}
+\setlength{\itemsep}{-1 pt}
+\setlength{\parskip}{0 pt}
+\setlength{\leftmargin}{0 pt}
+\setlength{\labelwidth}{10 pt}
+\setlength{\itemindent}{0 pt}
+\setlength{\labelsep}{10 pt}
+\setlength{\parsep}{0 pt}
+}{\end{enumerate}}
+\renewcommand{\labelenumi}{\textbf{\arabic{enumi}.}}
+\renewcommand{\labelenumii}{\textbf{\arabic{enumii}.}}
+\renewcommand{\labelenumiii}{\textbf{\arabic{enumiii}.}}
+\renewcommand{\labelenumiv}{\textbf{\arabic{enumiv}.}}
+
+\newcommand{\RemR}{\R\tende\R}
+\newcommand{\RnemR}[1]{\Rn{#1}\tende\R}
+\newcommand{\RemRn}[1]{\R\tende\Rn{#1}}
+\newcommand{\RnemRn}[2]{\Rn{#1}\tende\Rn{#2}}
+
+
+\newcommand{\barra}[1]{\overline{#1}}
+\newcommand{\beq}{\begin{eqnarray*}}
+\newcommand{\bigo}{\mathcal{O}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Cn}[1]{\mathbb{C}^{#1}}
+\newcommand{\Cmn}[2]{\mathbb{C}^{{#1}\times{#2}}}
+\newcommand{\eeq}{\end{eqnarray*}}
+\newcommand{\hess}{\nabla^2}
+\newcommand{\Img}{\mbox{Im}}
+\newcommand{\Lagr}{\mathcal{L}}
+\newcommand{\matriz}[4]{\left[\begin{array}{cc}#1 & #2 \\ #3 & #4\end{array}\right]}
+\newcommand{\meio}{\frac{1}{2}}
+\newcommand{\modulo}[1]{\vert #1\vert}
+\newcommand{\norma}[1]{\Vert #1\Vert}
+\newcommand{\Nu}{\mathcal{N}}
+\newcommand{\prodint}[2]{\langle {#1}, {#2} \rangle}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Rn}[1]{\mathbb{R}^{#1}}
+\newcommand{\Rmn}[2]{\mathbb{R}^{{#1}\times{#2}}}
+\newcommand{\tende}{\longrightarrow}
+\newcommand{\vetor}[2]{\left[\begin{array}{c}#1 \\ #2\end{array}\right]}
+\newcommand{\Vetor}[1]{\left[\begin{array}{c} #1 \end{array}\right]}
+\newcommand{\vetord}[2]{\left[\begin{array}{cc} #1 & #2 \end{array}\right]}
+
+\definecolor{darkred}{rgb}{0.7,0,0}
+\definecolor{darkgreen}{rgb}{0,0.7,0}
+\definecolor{darkblue}{rgb}{0,0,0.7}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{darkgray}{rgb}{0.25,0.25,0.25}
+\definecolor{lightgray}{rgb}{0.75,0.75,0.75}
+\definecolor{termcolor}{rgb}{0.8,0.8,0.8}
+\definecolor{codecolor}{rgb}{0.7,0.8,0.9}
+
+%\newenvironment{terminal}{\begin{lstlisting}[language=bash]}{\end{lstlisting}}
+\lstnewenvironment{terminal}
+    {
+    \lstset{language=bash,columns=fixed,basicstyle=\ttfamily\scriptsize,
+    frame=single,breaklines=true,breakatwhitespace=false,
+    backgroundcolor=\color{termcolor},
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,rulecolor=\color{black}}
+    }{}
+
+\lstnewenvironment{code}[1]
+    {\lstset{language=#1,columns=fixed,basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\bf\color{blue}\ttfamily,
+    commentstyle=\it\color{gray}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    showspaces=false,showstringspaces=false,
+    frame=single,backgroundcolor=\color{codecolor},
+    xleftmargin=0.5cm,xrightmargin=0.5cm,rulecolor=\color{black}}}{}
