@@ -236,20 +236,21 @@ problema, isto é, um ponto $x^* \in \Rn{n}$ tal que $$\nabla f(x^*) = 0.$$
 Obviamente, como vamos implementar este método, vamos parar quando encontrarmos um
 iterando $x^k$ tal que $\norma{\nabla f(x^k)} \leq \varepsilon,$ onde $\varepsilon > 0$ é
 dado. O método está descrito a seguir.
-\begin{algorithm}
- \item Dados $x^0 \in \Rn{n}$, $\varepsilon > 0$, $\alpha \in (0,1)$, $k = 0$.
- \item Enquanto $\norma{\nabla f(x^k)} > \varepsilon$ faça
- \begin{algorithm} 
-  \item $d^k = -\nabla f(x^k)$
-  \item $\lambda_k = 1$
-  \item Enquanto $f(x^k + \lambda_kd^k) > f(x^k) + \alpha \lambda_k \nabla f(x^k)^Td^k$ faça
-  \begin{algorithm}
-   \item $\lambda_k = \lambda_k/2$
-  \end{algorithm}
-  \item $x^{k+1} = x^k + \lambda_kd^k$
-  \item $k = k + 1$
- \end{algorithm}
- \item $x^* = x^k$.
+\begin{algorithm}[H]
+\caption{Método de Máxima Descida}
+ \begin{algorithmic}[1]
+ \State Dados $x^0 \in \Rn{n}$, $\varepsilon > 0$, $\alpha \in (0,1)$, $k = 0$.
+ \While{$\norma{\nabla f(x^k)} > \varepsilon$}
+  \State $d^k = -\nabla f(x^k)$
+  \State $\lambda_k = 1$
+  \While {$f(x^k + \lambda_kd^k) > f(x^k) + \alpha \lambda_k \nabla f(x^k)^Td^k$}
+   \State $\lambda_k = \lambda_k/2$
+  \EndWhile
+  \State $x^{k+1} = x^k + \lambda_kd^k$
+  \State $k = k + 1$
+ \EndWhile
+ \State $x^* = x^k$.
+ \end{algorithmic}
 \end{algorithm}
 Vamos implementar este método em algumas linguagens, e às vezes, mais de uma vezes, para
 exemplificar a interface CUTEr.
