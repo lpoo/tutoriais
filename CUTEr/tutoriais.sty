@@ -4,6 +4,7 @@
 \usepackage{shadethm}
 \usepackage{amssymb}
 \usepackage{listings}
+\usepackage{textcomp} % this package is usefull to enable copy and paste of codes of the pdf.
 \usepackage[dvipsnames]{color}
 \usepackage{framed}
 
@@ -128,6 +129,7 @@
 \lstnewenvironment{terminal}
     {
     \lstset{language=bash,columns=fixed,basicstyle=\ttfamily\scriptsize,
+    upquote=true,columns=flexible,
     frame=single,breaklines=true,breakatwhitespace=false,
     backgroundcolor=\color{termcolor},
     xleftmargin=0.5cm,
@@ -136,6 +138,7 @@
 
 \lstnewenvironment{code}[1]
     {\lstset{language=#1,columns=fixed,basicstyle=\ttfamily\scriptsize,
+    upquote=true,columns=flexible,
     keywordstyle=\bf\color{blue}\ttfamily,
     commentstyle=\it\color{gray}\ttfamily,
     stringstyle=\color{red}\ttfamily,
