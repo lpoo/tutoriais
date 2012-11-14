@@ -1,0 +1,39 @@
+\section{Exemplos}
+Como exemplos do CUTEr, vamos criar bibliotecas em diversas linguagens para resolver o 
+problema de minimização irrestrita. 
+Vamos implementar o método de máxima descida com busca linear utilizando o
+critério de Armijo.
+
+Considere o problema
+\begin{equation*}
+ \min f(x), \qquad x \in \Rn{n},
+\end{equation*}
+onde $f:\RnemR{n}$ é contínua e derivável. Vamos procurar um ponto estacionário para esse
+problema, isto é, um ponto $x^* \in \Rn{n}$ tal que $$\nabla f(x^*) = 0.$$
+Obviamente, como vamos implementar este método, vamos parar quando encontrarmos um
+iterando $x^k$ tal que $\norma{\nabla f(x^k)} \leq \varepsilon,$ onde $\varepsilon > 0$ é
+dado. O método está descrito a seguir.
+\begin{algorithm}[H]
+\caption{Método de Máxima Descida}
+ \begin{algorithmic}[1]
+ \State Dados $x^0 \in \Rn{n}$, $\varepsilon > 0$, $\alpha \in (0,1)$, $k = 0$.
+ \While{$\norma{\nabla f(x^k)} > \varepsilon$}
+  \State $d^k = -\nabla f(x^k)$
+  \State $\lambda_k = 1$
+  \While {$f(x^k + \lambda_kd^k) > f(x^k) + \alpha \lambda_k \nabla f(x^k)^Td^k$}
+   \State $\lambda_k = \lambda_k/2$
+  \EndWhile
+  \State $x^{k+1} = x^k + \lambda_kd^k$
+  \State $k = k + 1$
+ \EndWhile
+ \State $x^* = x^k$.
+ \end{algorithmic}
+\end{algorithm}
+Vamos implementar este método em algumas linguagens, e às vezes, mais de uma vezes, para
+exemplificar a interface CUTEr.
+
+\input{fortran}
+\input{c}
+\input{c++}
+\input{python}
+\input{matlab}

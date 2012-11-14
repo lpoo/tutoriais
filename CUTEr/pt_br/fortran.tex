@@ -1,0 +1,113 @@
+\subsection{Exemplos em Fortran}
+Fizemos uma implementação do método de máxima descida. Temos dois arquivos na implementação:
+\begin{itemize}
+ \item \verb+gradient.f+: Este arquivo contém a definição do método.
+ \item \verb+gradientmain.f+: Este arquivo contém a rotina principal do fortran.
+\end{itemize}
+Além desses arquivos também é necessário um arquivo com as definições das subrotinas
+\begin{itemize}
+ \item \verb+inip(n,x)+: Retorna n, a dimensão do problema, e x, o ponto inicial.
+ \item \verb+evalf(n,x,f)+: Recebe a dimensão do problema n, e o ponto x, e retorna o
+valor da função objetivo em f.
+ \item \verb+evalg(n,x,g)+: Recebe a dimensão do problema n, e o ponto x, e retorna o
+valor do gradiente da função objetivo em g.
+ \item \verb+endp(n,x)+: Imprime informações sobre a solução.
+\end{itemize}
+Para criar a interface em fortran, é necessário apenas criar um arquivo com as subrotinas
+acima.
+O arquivo com a interface (sem os comentários está abaixo:)
+\begin{code}{fortran}
+      subroutine inip(n,x)
+
+      implicit none
+
+      integer n
+
+      double precision x(*)
+      
+      integer i
+
+      integer err, ifile, nt, m, nmax
+      PARAMETER (nmax=10000)
+      double precision bl(nmax), bu(nmax)
+
+      ifile = 30
+      OPEN(ifile, FILE='OUTSDIF.d', FORM='FORMATTED',
+     $     STATUS='OLD',IOSTAT=err)
+      REWIND ifile
+      IF (err.NE.0) THEN
+        WRITE(*,*)'Could not open the OUTSDIF.d file'
+        STOP
+      ENDIF
+
+      CALL cdimen(ifile, nt, m)
+
+      if (nt.GT.nmax) THEN
+        WRITE(*,*)'Increase nmax'
+        STOP
+      ENDIF
+      if (m.GT.0) THEN
+        WRITE(*,*)'Cannot handle constraints' 
+        STOP
+      ENDIF
+
+      CALL usetup(ifile, 7, n, x, bl, bu, nmax)
+
+      DO i = 1,n
+        IF ((bl(i).GT.-1.0D20).OR.(bu(i).LT.1.0D20)) THEN
+          WRITE(*,*)'Cannot handle boxes'
+          STOP
+        ENDIF
+      ENDDO
+      
+      end
+      
+C     ******************************************************************
+C     ******************************************************************
+
+      subroutine evalf(n,x,f)
+
+      implicit none
+
+      integer n
+      double precision f
+
+      double precision x(n)
+
+      CALL ufn(n, x, f)
+          
+      end
+
+C     ******************************************************************
+C     ******************************************************************
+
+      subroutine evalg(n,x,g)
+
+      implicit none
+
+      integer n
+
+      double precision g(n),x(n)
+      
+      CALL UGR(n, x, g)
+
+      end 
+
+C     ******************************************************************
+C     ******************************************************************
+
+      subroutine endp(n,x)
+
+      implicit none
+
+      integer n
+      double precision x(n)
+      integer i
+      
+      write(*,*)'Solution:'
+      do i = 1,n
+          write(*,*)x(i)
+      end do
+      
+      end 
+\end{code}

@@ -1,0 +1,34 @@
+\section{Interface}
+A biblioteca CUTEr dá ao usuário um conjunto de funções para receber informações do problema.
+As funções são separadas para o caso irrestrito (precedidas pela letra \emph{U}) ou
+restrito, (precedidas pela letra \emph{C}). Se o usuário necessitar do valor da funcão
+ objetivo num ponto dado, ele pode chamar \verb+UFN+ se o problema for irrestrito, ou
+\verb+CFN+ caso contrário. Note que a sintaxe das funções não é a mesma, pois o CUTEr tenta
+ser o mais prático possível. A sintaxe dessas funcões é
+\begin{itemize}
+ \item \verb+UFN (N, X, F)+, onde \verb+N+ é um inteiro indicando o número de 
+variáveis do problema, \verb+X+ é um vetor de
+reais, e \verb+F+ é real que sai com o valor da função objetivo.
+ \item \verb+CFN (N, M, X, F, LC, C)+, onde \verb+N+,\verb+X+ e \verb+F+ indicam as
+mesmas coisas, \verb+M+ é um inteiro indicando o número de restrições, \verb+C+ é um
+vetor de reais, com os valores das restrições e \verb+LC+ é a dimensão real de \verb+C+,
+que deve ser maior ou igual a \verb+M+.
+\end{itemize}
+Existem muitas outras funções para interação com o problema. Elas podem ser vistas na
+documentação do CUTEr no arquivo \verb+general.pdf+ dentro da pasta
+\verb+$CUTER/common/doc+ nas páginas 31 e 32.
+
+Para rodar nossa biblioteca com o CUTEr, é necessário criar alguns arquivos extras.
+Um deles é o código que relaciona o nosso programa com essas funções do CUTEr. Além disso,
+também é necessário criar um arquivo que indica ao CUTEr quais as bibliotecas que nossa
+biblioteca precisa. A maneira tradicional de se trabalhar com o CUTEr (o novo CUTEr, pelo
+menos) é compilar nossa biblioteca inteira para um arquivo .a, compilar esse arquivo de
+ligação do CUTEr com nossa biblioteca, e passar tudo isso pro CUTEr. Quando necessário,
+rodamos o nosso pacote pelo comando do CUTEr \verb+runcuter+. Por exemplo, para rodar o
+pacote \verb+pack_exemplo+, usamos o comandos
+\begin{terminal}
+$ runcuter -p pack_exemplo -D problema
+\end{terminal}
+onde \verb+problema+ é um dos problemas do CUTEr sem a extensão \verb+.SIF+.
+
+\subsection{Instalação da interface}
