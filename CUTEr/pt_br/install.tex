@@ -3,21 +3,20 @@ O CUTEr é um ambiente de testes para métodos de otimização.
 Ele foi feito em Fortran, porém tem suporte a C/C++.
 Para instalar o CUTEr você irá precisar dos programas:
 \begin{itemize}
- \item gawk 
- \item gcc 
- \item gfortran (ou outro compilador de fortran)
- \item svn (subversion)
+ \item gawk,
+ \item gcc,
+ \item gfortran (ou outro compilador de fortran),
+ \item svn (subversion).
 \end{itemize}
 Com os pacotes instalados, iremos criar uma pasta para o CUTEr. Você pode criar uma
 pasta separada no sistema ou instalar tudo no seu diretório principal. No meu caso,
 irei criar uma pasta chamada \verb+libraries+ na minha pasta pessoal, e criar uma
 pasta para o CUTEr dentro dessa pasta. Ajuste os comandos de acordo com sua escolha.
-  \begin{terminal}
+\begin{terminal}
 $ mkdir -p $HOME/libraries/CUTEr
 $ cd $HOME/libraries/CUTEr
 \end{terminal}
 Agora faça o download do SifDec2 pelo comando a seguir
-\small
 \begin{terminal}
 $ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/sifdec/branches/SifDec2 ./sifdec2
 \end{terminal}
@@ -29,12 +28,8 @@ E a versão 64 bits:
 \begin{terminal}
 $ svn co http://tracsvn.mathappl.polymtl.ca/SVN/cuter/cuter/branches/CUTEr64 ./cuter2
 \end{terminal}
-\normalsize
 Faça o download da coleção de problemas SIF na página
-\begin{verbatim}
-http://cuter.rl.ac.uk/cuter-www/Problems/mastsif.shtml
-\end{verbatim}
-ou use os comandos
+\url{http://cuter.rl.ac.uk/cuter-www/Problems/mastsif.shtml} ou use os comandos
 \begin{terminal}
 $ wget ftp://ftp.numerical.rl.ac.uk/pub/cuter/mastsif_small.tar.gz 
 $ wget ftp://ftp.numerical.rl.ac.uk/pub/cuter/mastsif_large.tar.gz
@@ -119,7 +114,7 @@ aparecerá. Aperte enter. Agora vamos instalar o CUTEr. Para isso, faça
 $ cd $CUTER
 $ ./install_cuter
 \end{terminal}
-A instalação do cuter irá pedir que você escolha
+A instalação do CUTEr irá pedir que você escolha
 \begin{itemize}
  \item Plataforma (no nosso caso será 5 - PC)
  \item Sistema Operacional (no nosso caso será 2 - linux)

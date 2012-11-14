@@ -1,14 +1,19 @@
+# As variaveis a seguir podem ser informadas pela linha de comando.
 lang=pt_br
 
-all: pdf bibtex
-	cd $(lang); pdflatex -interaction=nonstopmode -output-directory ../ cuter
-	cd $(lang); pdflatex -interaction=nonstopmode -output-directory ../ cuter
+help:
+	@echo "Por favor utilize \`make <target>' onde <target> eh:"
+	@echo "  pdf    para gerar o pdf."
+	@echo ""
+	@echo "Para alterar a lingua utilize \`make lang=<target_lang> <target>'"
+	@echo "onde <target_lang> eh a sigla para a lingua desejada"
+	@echo "(o valor padrão eh \`pt_br')."
 
-pdf:
-	cd $(lang); pdflatex -interaction=nonstopmode -output-directory ../ cuter
-
-bibtex:
-	bibtex cuter
+pdf: 
+	cd $(lang); pdflatex --jobname=cuter_$(lang) -interaction=nonstopmode -output-directory ../ cuter
+	# bibtex cuter_$(lang)
+	cd $(lang); pdflatex --jobname=cuter_$(lang) -interaction=nonstopmode -output-directory ../ cuter
+	cd $(lang); pdflatex --jobname=cuter_$(lang) -interaction=nonstopmode -output-directory ../ cuter
 
 clean:
 	- rm *.acn
