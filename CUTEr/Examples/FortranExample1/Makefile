@@ -12,6 +12,7 @@ run: $(OBJS) $(TESTS)
 
 cuter: $(PACKNAME)main.o
 	cp -f $(PACKNAME).sh.pro $(CUTER)/build/prototypes/$(PACKNAME).sh.pro
+	cp -f gradient.o $(MYCUTER)/double/bin
 	sed -f $(MYCUTER)/double/config/script.sed $(PACKNAME).sh.pro > $(MYCUTER)/bin/$(PACKNAME)
 	chmod a+x $(MYCUTER)/bin/$(PACKNAME)
 	cp -f $(PACKNAME)main.f $(MYCUTER)/double/bin/$(PACKNAME)ma.f

@@ -32,6 +32,68 @@ dado. O método está descrito a seguir.
 Vamos implementar este método em algumas linguagens, e às vezes, mais de uma vezes, para
 exemplificar a interface CUTEr.
 
+\subsection{Instruções Gerais}
+
+\emph{
+Os passos a seguir são feitos normalmente após a criação da biblioteca, porque
+primeiro você precisa fazer com que ela funcione em outros problemas. Na dúvida,
+faça um dos exemplos a seguir e depois volte para ler esta seção.}
+
+Para que seu programa funcione com o CUTEr, você irá precisar de um arquivo de 
+protótipo que pode ser copiado de \verb+$CUTER/build/prototypes/gen90.sh.pro+.
+Nesse arquivo, você irá mudar algumas variáveis para o compilador do CUTEr
+encontrar seus arquivos. As linhas sem comentários estão mostradas a seguir:
+\begin{code}{bash}
+export PACK=gen90
+export PACKAGE=gen
+export PACK_PRECISION="single double"
+export PACKOBJS="cuterinter.o gen90.o"
+export PACKLIBS=""
+export SPECS="GEN.SPC"
+\end{code}
+Vamos supor que temos um pacote chamado \verb+cutertest+, e que esse pacote precisa
+de um objeto \verb+auxiliar.o+, e de uma biblioteca do sistema \verb+libalgo.a+.
+Além disso, você deve ter criado (veja nos exemplos) um arquivo específico para
+fazer a interface entre o CUTEr e o pacote \verb+cutertest+. Vamos supor que
+a linguagem em questão seja \verb+fortran+, então você deve ter criado um
+arquivo \verb+cutertestmain.f+. A variável \verb+PACK+ define um pequeno
+nome para o seu pacote, e \verb+PACKAGE+ é o nome de seu pacote.
+\verb+PACK_PRECISION+ é a precisão do seu pacote (muitas vezes double).
+\verb+PACKOBJS+ são os objetos que você deve colocar na pasta
+\verb+$MYCUTER/(precision)/bin+ onde (precision) é a precisão que você instalou
+o CUTEr.
+\verb+PACKLIBS+ são as bibliotecas que o pacote precisa, e \verb+SPECS+ se refere
+a algum arquivo de especificações que o seu pacote pode depender. Esse arquivo pode
+ser local (isto é, na pasta onde você irá chamar o CUTEr) ou na pasta
+\verb+$CUTER/common/src/pkg/$PACKAGE/+.
+
+Para o nosso exemplo deveríamos ter no arquivo chamado \verb+cutertest.sh.pro+
+as seguintes definições:
+\begin{code}{bash}
+export PACK=cutertest
+export PACKAGE=cutertest
+export PACK_PRECISION="double"
+export PACKOBJS="auxiliar.o"
+export PACKLIBS="-lalgo"
+export SPECS=""
+\end{code}
+Note que devemos copiar o arquivo \verb+auxiliar.o+ para \verb+$MYCUTER/double/bin+.
+Agora, precisamos passar esse arquivo por um formatador de texto utilizando um
+script que o CUTEr fornece e devemos habilitá-lo para execução. Para isso, os comandos são
+\begin{terminal}
+$ sed -f $MYCUTER/double/config/script.sed cutertest.sh.pro > $MYCUTER/bin/cutertest
+$ chmod a+x $MYCUTER/bin/cutertest
+\end{terminal}
+Agora passamos o arquivo de interface e o arquivo compilado para o CUTEr.
+\begin{terminal}
+$ cp -f cutertestmain.f $MYCUTER/double/bin/cutertestma.f
+$ cp -f cutertestmain.o $MYCUTER/double/bin/cutertestma.o
+\end{terminal}
+Tendo feito isso, agora seu arquivo está pronto para ser executado. Use o comando
+\begin{terminal}
+$ runcuter -p cutertest -D ROSENBR
+\end{terminal}
+
 \input{fortran}
 \input{c}
 \input{c++}
