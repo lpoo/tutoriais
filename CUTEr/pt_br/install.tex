@@ -4,9 +4,10 @@ Ele foi feito em Fortran, porém tem suporte a C/C++.
 Para instalar o CUTEr você irá precisar dos programas:
 \begin{itemize}
  \item gawk,
- \item gcc,
+ \item gcc/g++ (ou outro compilador de C/C++),
  \item gfortran (ou outro compilador de fortran),
- \item svn (subversion).
+ \item svn (subversion),
+ \item algum editor de texto (gedit, vim, etc.).
 \end{itemize}
 Com os pacotes instalados, iremos criar uma pasta para o CUTEr. Você pode criar uma
 pasta separada no sistema ou instalar tudo no seu diretório principal. No meu caso,
@@ -73,8 +74,13 @@ Anote o nome do diretório que será criado e aperte enter. No nosso caso, será
  \verb+SifDec.large.pc.lnx.gfo+. Para a próxima mensagem, escreva `n' e aperte enter.
 
 Agora vamos acrescentar as variáveis de sistema para que o instalador e os softwares
-que formos utilizar saibam onde está o CUTEr. Edite o arquivo \verb+$HOME/.bashrc+ e
-adicione as seguintes linhas
+que formos utilizar saibam onde está o CUTEr. Edite o arquivo \verb+$HOME/.bashrc+.
+Para isso, você pode usar o gedit ou algum outro editor de texto. Por exemplo,
+com o gedit, para abrir o arquivo, basta usar o comando
+\begin{terminal}
+$ gedit $HOME/.bashrc &
+\end{terminal}
+Adicione as seguintes linhas
 \begin{terminal}
 ROOTCUTER="$HOME/libraries/CUTEr"
 export CUTER="$ROOTCUTER/cuter2"
