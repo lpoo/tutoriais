@@ -1,0 +1,14 @@
+#!/usr/bin/make
+CXX = g++
+PKG = dcicpp
+
+all: $(PKG)_main.o
+
+%.o: %.cpp
+	$(CXX) -c -o $@ $< -Wall -Wextra -I$(CUTEST)/include
+
+clean:
+	rm -f $(PKG)_main.o
+
+tools:
+	echo "No tools"
