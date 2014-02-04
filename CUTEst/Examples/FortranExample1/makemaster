@@ -1,0 +1,6 @@
+#!/usr/bin/make
+
+all: fortran_example_main.o
+
+%.o: %.f
+	gfortran -c -o $@ $< -I$(CUTEST)/include
