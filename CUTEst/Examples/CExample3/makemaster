@@ -1,0 +1,6 @@
+#!/usr/bin/make
+
+all: c_example3_main.o
+
+%.o: %.c
+	gcc -c -o $@ $< -Wall -Wextra -I$(CUTEST)/include
