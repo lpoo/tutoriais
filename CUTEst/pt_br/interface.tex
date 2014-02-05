@@ -1,0 +1,25 @@
+%!TEX root=cutest.tex
+\section{Interface}
+
+A biblioteca CUTEst dá ao usuário um conjunto de funções para receber
+informações do problema. As funções são do tipo \verb+cutest_nome+, e são separadas
+para o caso irrestrito ou restrito, onde o nome é iniciado com as letras
+\emph{U} e \emph{C}, respectivamente.  Por exemplo, se o usuário necessitar do
+valor da funcão objetivo num ponto dado, ele pode chamar \verb+cutest_ufn+ se o
+problema for irrestrito, ou \verb+cutest_cfn+ caso seja restrito. Note que a
+sintaxe das funções não é a mesma.
+
+\begin{itemize}
+ \item \verb+cutest_ufn (status, N, X, F)+, onde \verb+N+ é um inteiro 
+    indicando o número de  variáveis do problema, \verb+X+ é um vetor de reais,
+    \verb+F+ é real que sai com o valor da função objetivo, e \verb+status+ é
+    uma variável de saída indicando se houve erro.
+ \item \verb+cutest_cfn (status, N, M, X, F, C)+, onde \verb+N+,\verb+X+ e
+    \verb+F+ indicam as mesmas coisas, \verb+M+ é um inteiro indicando o número
+    de restrições, \verb+C+ é um vetor de reais, com os valores das restrições 
+    e \verb+status+ é uma variável de saída indicando se houve erro. 
+\end{itemize}
+
+Existem muitas outras funções de interface do CUTEst. Você vai ter que procurar
+um pouco até achar o que você quer.
+Veja o arquivo \verb+cutest.pdf+ dentro da pasta \verb+/doc/pdf+ do CUTEst.

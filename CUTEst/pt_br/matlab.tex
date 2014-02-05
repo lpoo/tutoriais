@@ -1,0 +1,228 @@
+\subsection{Exemplos em MATLAB}
+Com o {\tt CUTEr} devidamente instalado, vejamos como ocorre a interface com o {\tt MATLAB}.
+
+Primeiro, crie uma pasta {\tt Test}, onde ser\~ao gerados os arquivos decodificados do problema
+ e o arquivo {\tt .mex} da interface para {\tt MATLAB}.
+
+No terminal, dentro da pasta {\tt Test}, execute o comando:
+\begin{terminal}
+$ runcuter -p mx -D  ROSENBR
+\end{terminal}
+Al\'em dos arquivos padr\~ao, gerados pelo decoder para o problema {\tt ROSENBR}, haver\'a 
+tamb\'em o arquivo: {\tt mcuter.mex}. A extens\~ao {\tt .mex} poder\'a variar conforme a 
+instala\c{c}\~ao do {\tt CUTEr} e o sistema operacional.
+
+Em seguida, v\'a para o {\tt MATLAB}. Adicione as pastas {\tt \$CUTER/common/src/matlab} e {\tt 
+\$MYCUTER/bin} ao {\tt path} do {\tt MATLAB}. Isso pode ser feito atrav\'es do menu {\tt File\ 
+>\ Set Path...} ou pelo prompt do {\tt MATLAB} usando o comando {\tt addpath}.
+
+Dentro do {\tt MATLAB}, v\'a para a pasta {\tt Test}. Para verificar se est\'a tudo certo, 
+execute o comando:
+\begin{code}{matlab}
+>> prob = cuter_setup()
+
+prob = 
+
+         n: 2
+         m: 0
+      nnzh: 3
+      nnzj: 0
+         x: [2x1 double]
+        bl: [2x1 double]
+        bu: [2x1 double]
+         v: [0x1 double]
+        cl: [0x1 double]
+        cu: [0x1 double]
+    equatn: [0x1 logical]
+    linear: [0x1 logical]
+      name: 'ROSENBR   '
+\end{code}
+Se estiver tudo correto, a sa\'ida dever\'a ser como acima.
+
+O comando {\tt cuter\_setup}, que inicializa o problema e fornece suas carcacter\'isticas, se 
+encontra na pasta {\tt \$CUTER/src/common/matlab}, dentro da qual est\~ao as demais rotinas 
+(arquivos {\tt .m}) para acessar fun\c{c}\~ao objetivo, gradiente, restri\c{c}\~oes, etc.
+
+Por exemplo, para saber o valor da fun\c{c}\~ao objetivo em um determinado ponto, usamos:
+\begin{code}{matlab}
+>> f = cuter_obj([-1 2]')
+
+f =
+
+   104
+\end{code}
+Abaixo temos um c\'odigo em {\tt MATLAB} que implementa o m\'etodo do gradiente. Para acessar a 
+fun\c{c}\~ao objetivo e o gradiente, fizemos uso da fun\c{c}\~ao {\tt cuter\_obj}.
+\begin{code}{matlab}
+function [x,f,gradnorm,iter,flag] = cute_gradient()
+%
+%   [x,f,gradnorm,iter,flag] = cute_gradient()
+%
+%   flags:
+%   -2      maximum number of iterations reached
+%   -1      too short step size
+%    1      gradient norm less than eps0
+%
+
+    % inicializando o problema
+    prob = cuter_setup();
+    
+    % dimensao do problema
+    n = prob.n;
+    
+    % ponto inicial
+    x0 = prob.x;
+    
+    %====================================
+    % Gradient method with linesearch
+    %====================================
+    maxit=n*10000;
+    gamma=1e-4;
+    eps0=1e-5;
+    tmin=1e-8;
+    done=0;
+    flag=0;
+    k=0;
+    x=x0;
+    
+    while ~done
+        k=k+1;
+        
+        % maximum number of iterations test
+        if k>maxit
+           done=1;
+           flag=-2;
+           continue
+        end
+        
+        x0=x;
+        
+        [f,g] = cuter_obj(x);
+        f0=f;
+        
+        gradnorm=norm(g,2);
+        
+        % gradient norm test
+        if gradnorm<eps0
+            done=1;
+            flag=1;
+            continue
+        end
+        
+        % search direction
+        d = -g;
+        gtd = g'*d;
+        t = 1;
+        
+        x = x0 + t*d;
+        f = cuter_obj(x);
+        
+        % Armijo linesearch
+        while f > f0 + t*gamma*gtd
+            t = 0.5*t;
+            if t<tmin
+                done=1;
+                flag=-1;
+            end
+            
+            x = x0 + t*d;
+            f = cuter_obj(x);
+        end
+        
+    end
+    
+    iter=k;
+
+end
+\end{code}
+E executando o c\'odigo acima, obtemos
+\begin{code}{matlab}
+>> [x,f,gradnorm,iter,flag] = cute_gradient()
+
+x =
+
+    1.0000
+    1.0000
+
+
+f =
+
+   6.1319e-11
+
+
+gradnorm =
+
+   9.9971e-06
+
+
+iter =
+
+       10917
+
+
+flag =
+
+     1
+\end{code}
+
+\'E poss\'ivel tamb\'em utilizar as rotinas de otimiza\c{c}\~ao do pr\'oprio {\tt MATLAB}. Por 
+exemplo, para utilizar o {\tt fminunc}, usamos:
+\begin{code}{matlab}
+>> prob = cuter_setup();
+>> [x,f,flag] = fminunc(@(x) cuter_obj(x),prob.x)
+Warning: Gradient must be provided for trust-region method;
+  using line-search method instead. 
+> In fminunc at 356
+
+Local minimum found.
+
+Optimization completed because the size of the gradient is less than
+the default value of the function tolerance.
+
+<stopping criteria details>
+
+
+x =
+
+    1.0000
+    1.0000
+
+
+f =
+
+   2.8336e-11
+
+
+flag =
+
+     1
+\end{code}
+Lembrando que as op\c{c}\~oes do solver s\~ao ajustadas pelo comando {\tt optimset}.
+\begin{code}{matlab}
+>> prob = cuter_setup();
+>> opts = optimset('GradObj','on');
+>> [x,f,flag] = fminunc(@(x) cuter_obj(x),prob.x,opts)
+
+Local minimum possible.
+
+fminunc stopped because the final change in function value relative to 
+its initial value is less than the default value of the function tolerance.
+
+<stopping criteria details>
+
+
+x =
+
+    1.0000
+    1.0000
+
+
+f =
+
+   4.0035e-13
+
+
+flag =
+
+     3
+\end{code}

@@ -1,0 +1,113 @@
+%!TEX root = cutest.tex
+\section{Instalação}
+O CUTEst é um ambiente de testes para métodos de otimização. 
+Ele foi feito em Fortran, com suporte a C. Para usar em C++, o trabalho é um
+pouco maior. Depois de entender o processo descrito aqui para C, verifique o
+trabalho de \cite{bib:abel-dcicpp} como exemplo.
+Para instalar o CUTEr você irá precisar dos programas:
+\begin{itemize}
+ \item gawk,
+ \item gcc (ou outro compilador de C),
+ \item gfortran (ou outro compilador de fortran),
+ \item svn (subversion),
+ \item algum editor de texto (gedit, vim, etc.).
+\end{itemize}
+Com os pacotes instalados, iremos criar uma pasta para o CUTEst. Você pode criar
+uma pasta separada no sistema ou instalar tudo no seu diretório principal. No
+meu caso, irei criar uma pasta chamada \verb+libraries+ na minha pasta pessoal,
+e criar uma pasta para o CUTEst dentro dessa pasta. Ajuste os comandos de acordo
+com sua escolha.
+
+\subsection{Preparação e download}
+O CUTEst trabalha com quatro diretórios: archdefs, cutest, sifdecode e sif.
+Você precisa definir uma variável de sistema para cada um desses diretórios.
+Vamos fazer isso logo.
+
+Inclua no seu arquivo \verb+$HOME/.bashrc+ as seguintes linhas:
+\begin{code}{bash}
+LIBSDIR="$HOME/libraries"
+export ARCHDEFS="$LIBSDIR/archdefs"
+export SIFDECODE="$LIBSDIR/sifdecode"
+export CUTEST="$LIBSDIR/cutest"
+export MASTSIF="$LIBSDIR/sif"
+\end{code}
+Feche o terminal e abra um novo, e vamos começar a instalação.
+
+Digite
+\begin{terminal}
+$ mkdir -p $LIBSDIR
+$ cd $LIBSDIR
+\end{terminal}
+Agora você precisa fazer o download das bibliotecas usando o subversion. Para
+detalhes veja \cite{bib:cutest}. Sem detalhes, copie o arquivo abaixo para um
+arquivo \verb+downcutest.sh+ e salve-o na pasta \verb+$LIBSDIR+.
+\begin{code}{bash}
+#!/bin/bash
+cmd="svn checkout -q --username anonymous"
+url="http://ccpforge.cse.rl.ac.uk/svn/cutest/"
+for name in archdefs sifdecode cutest sif
+do
+  echo "Downloading $name"
+  $cmd $url/$name/trunk ./$name
+done
+\end{code}
+Faça esse arquivo ficar executável e execute-o com os comandos
+\begin{terminal}
+$ chmod a+x downcutest.sh
+$ ./downcuter.sh
+\end{terminal}
+Caso não funcione alguma coisa, você pode retirar o \verb+'-q'+ da chamada do
+svn para verificar qual o erro.
+
+\subsection{Instalação}
+Para instalar o CUTEst, comece entrando no diretório do archdefs
+\begin{terminal}
+$ cd $ARCHDEFS
+\end{terminal}
+Daí, execute o script \verb+install_optsuite+ e siga as instruções
+\begin{terminal}
+$ ./install_optsuite
+\end{terminal}
+As perguntas feitas são:
+\begin{terminal}
+Do you wish to install GALAHAD (Y/n)?
+Do you wish to install CUTEst (Y/n)?
+Do you require the CUTEst-Matlab interface (y/N)?
+Select platform
+Select operating system
+Would you like to review and modify the system commands (y/N)?
+Select fortran compiler
+Would you like to review and modify the fortran compiler settings (y/N)?
+Select C compiler
+Would you like to review and modify the C compiler settings (y/N)?
+Would you like to compile SIFDecode ... (Y/n)?
+Would you like to compile CUTEst ... (Y/n)?
+Which precision do you require for the installed subset (D/s/b) ?
+\end{terminal}
+As etapas acima são totalmente dependentes da sua configuração. A maior parte
+vem com o default que você provavelmente gostará de escolher. No caso, o
+GALAHAD eu não selecionei, e as outras opções foram default. A plataforma que
+eu escolhi foi um PC com processador de 64 bits genérico. O sistema operacional
+é linux. Os compiladores de fortran e C são o gfotran e o gcc, respectivamente.
+
+Ao fim da instalação, o script imprime uma linha tipo
+\begin{terminal}
+export MYARCH="xxxxxxxxxxx"
+\end{terminal}
+Copie essa linha para o seu \verb+$HOME/.bashrc+ e reinicie o terminal. 
+No meu caso, de acordo com
+minhas escolhas para o instalar, seu MYARCH é \verb+pc64.lnx.gfo+.
+Se nenhum erro apareceu, você deve ter o CUTEst instalado.
+
+\subsection{Testando o CUTEst}
+
+Para testar, vamos criar um diretório temporário e rodar o CUTEst com pacotes
+genéricos, feitos para teste.
+\begin{terminal}
+$ cd $(mktemp -d)
+$ runcutest -p genc -D ROSENBR
+$ runcutest -p gen77 -D ROSENBR
+$ runcutest -p gen90 -D ROSENBR
+\end{terminal}
+Cada comando destes 3 últimos deve retornar uma tela com estatísticas CUTEst.
+Eles são, respectivamente, para C, fortran 77 e fortran 90.

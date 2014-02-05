@@ -114,26 +114,44 @@
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{darkgray}{rgb}{0.25,0.25,0.25}
 \definecolor{lightgray}{rgb}{0.75,0.75,0.75}
-\definecolor{termcolor}{rgb}{0.8,0.8,0.8}
-\definecolor{codecolor}{rgb}{0.7,0.8,0.9}
+\definecolor{termcolor}{rgb}{0.95,0.95,0.95}
+\definecolor{codecolor}{rgb}{1.0,1.0,1.0}
 
 %\newenvironment{terminal}{\begin{lstlisting}[language=bash]}{\end{lstlisting}}
-\lstnewenvironment{terminal}
-    {
-    \lstset{language=bash,columns=fixed,basicstyle=\ttfamily\scriptsize,
-    upquote=true,columns=flexible,
-    frame=single,breaklines=true,breakatwhitespace=false,
-    backgroundcolor=\color{termcolor},
-    xleftmargin=0.5cm,
-    xrightmargin=0.5cm,rulecolor=\color{black}}
-    }{}
 
-\lstnewenvironment{code}[1]
-    {\lstset{language=#1,columns=fixed,basicstyle=\ttfamily\scriptsize,
-    upquote=true,columns=flexible,
+\lstdefinestyle{codestyle}{
+    columns=fixed,
+    basicstyle=\ttfamily\scriptsize,
+    upquote=true,
+    columns=flexible,
     keywordstyle=\bf\color{blue}\ttfamily,
     commentstyle=\it\color{gray}\ttfamily,
     stringstyle=\color{red}\ttfamily,
-    showspaces=false,showstringspaces=false,
-    frame=single,backgroundcolor=\color{codecolor},
-    xleftmargin=0.5cm,xrightmargin=0.5cm,rulecolor=\color{black}}}{}
+    showspaces=false,
+    showstringspaces=false,
+    frame=single,
+    backgroundcolor=\color{codecolor},
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,
+    rulecolor=\color{black}
+}
+
+\lstdefinestyle{terminalstyle}{
+    language=bash,
+    columns=fixed,
+    basicstyle=\ttfamily\scriptsize,
+    upquote=true,
+    columns=flexible,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=false,
+    backgroundcolor=\color{termcolor},
+    xleftmargin=0.5cm,
+    xrightmargin=0.5cm,
+    rulecolor=\color{black}}
+
+\lstnewenvironment{terminal}{
+    \lstset{style=terminalstyle}}{}
+
+\lstnewenvironment{code}[1]
+    {\lstset{language=#1,style=codestyle}}{}

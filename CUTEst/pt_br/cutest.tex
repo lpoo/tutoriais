@@ -1,0 +1,62 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{color}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{multirow}
+\usepackage{amssymb, amsmath, amsfonts}
+\bibliographystyle{plain}
+\usepackage{url}
+\topmargin		0 cm
+\hoffset		0 cm
+\voffset		0 cm
+\evensidemargin		0 cm
+\oddsidemargin		0 cm
+\setlength{\textwidth}{16 cm}
+\setlength{\textheight}{21 cm}
+\usepackage{../../tutoriais}
+
+\title{Apostila de Instalação do CUTEst}
+\author{
+Abel Soares Siqueira\footnote{abel@ime.unicamp.br} \and
+Douglas Gonçalves\footnote{douglas@ime.unicamp.br} \and
+Leandro F. Prudente\footnote{lfprudente@ime.unicamp.br} \and
+Raniere Gaia Costa da Silva\footnote{ra092767@ime.unicamp.br}}
+
+\numberwithin{equation}{section}
+
+% \newcommand{\visiblelbl}[1]{\label{#1}{\color{red}{#1}}}
+\newcommand{\visiblelbl}[1]{\label{#1}}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\vspace{1 cm}
+
+A biblioteca CUTEst (\cite{bib:cuter1,bib:cuter2,bib:cutest}) é de extrema
+importância para a realização de testes computacionais na área de otimização
+computacional.  Tendo em vista que é necessário fazer comparações entre os
+algoritmos, Muitos dos mais famosos atualmente têm uma interface que permite a
+execução dos testes do CUTEst. Vamos mostrar nesse tutorial como instalar o
+CUTEst e criar uma interface em Fortran e C para o mesmo. Algumas partes deste
+tutorial supõem que o leitor saiba o suficiente de linux.
+
+Para uma interface em Windows ou Mac, leia veja a Seção \ref{sec:contribute}.
+
+\input{introduction}
+\input{install}
+\input{interface}
+\input{examples}
+\input{contribute}
+
+\appendix
+\input{license}
+
+\begin{thebibliography}{3}
+\bibitem{bib:cuter1} http://cuter.rl.ac.uk/cuter-www 
+\bibitem{bib:cuter2} https://magi-trac-svn.mathappl.polymtl.ca/Trac/cuter 
+\end{thebibliography}
+\end{document}
