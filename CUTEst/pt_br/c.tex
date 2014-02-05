@@ -1,14 +1,15 @@
 %!TEX root=cutest.tex
 \subsection{Exemplos em C}
-Fizemos três implementações do método de máxima descida. A primeira é uma implementação
-que não leva me conta o CUTEr, e depois adapta o CUTEr para o problema. A segunda já leva
-em conta o formato das funções do CUTEr e faz pouca adaptação posteriormente. A terceira
-usa exatamente as funções do CUTEr, não necessitando de adaptação.
+Fizemos três implementações do método de máxima descida. A primeira é uma
+implementação que não leva em conta o CUTEst, e depois adapta o CUTEst para o
+problema. A segunda já leva em conta o formato das funções do CUTEst e faz pouca
+adaptação posteriormente. A terceira usa exatamente as funções do CUTEst, não
+necessitando de adaptação.
 
 Cada implementação do método de máxima descida consiste de dois arquivos:
-\verb+steepest_descent.h+ e \verb+steepest_descent.c+. No .h, definimos que funções
-iremos chamar, e uma estrutura com as informações da execução. As funções para a 
-primeira implementação são
+\verb+steepest_descent.h+ e \verb+steepest_descent.c+. No .h, definimos que
+funções iremos chamar, e uma estrutura com as informações da execução. As
+funções para a primeira implementação são
 \begin{itemize}
  \item \verb+double Norm (double * x, unsigned int n);+ \\
 Esta função calcula a norma 2 de um vetor \verb+x+ com tamanho \verb+n+.
@@ -58,32 +59,32 @@ Note como temos que declarar as funções \verb+objfun+ e \verb+gradfun+. Sem el
 erros na compilação. Veja os arquivos \verb+test2.c+ e \verb+test3.c+
 para outros exemplos.
 
-A interface para o CUTEr é o arquivo \verb+c_example1main.c+:
+A interface para o CUTEst é o arquivo \verb+c_example1main.c+:
 \scriptsize
 \lstinputlisting[style=codestyle, language=C]
 {../Examples/CExample1/c_example1main.c}
 \normalsize
 Note que também é necessário definir as funções \verb+objfun+ e \verb+gradfun+.
-Essas funções, por sua vez, chamam as funções correspondentes em CUTEr para esse
+Essas funções, por sua vez, chamam as funções correspondentes em CUTEst para esse
 serviço. A função \verb+UFN+ calcula o valor da função objetivo e a função
 \verb+UGR+ calcula o valor do gradiente. Note que quando compilamos uma função
 em Fortran, ele recebe um nome em letras minúsculas e com um \_ (underline) na
 frente (no caso do gfortran. Outros compiladores podem divergir). O arquivo
-\verb+cuter.h+ define macros para todas as funções do CUTEr serem chamados com
+\verb+cuter.h+ define macros para todas as funções do CUTEst serem chamados com
 letras maiúsculas. Note ainda que a função \verb+UFN+ recebe um ponteiro para
 \verb+int+ e dois ponteiros para \verb+double+, sendo o primeiro para o vetor
-$x$ e o segundo para o valor da função objetivo. As funções do CUTEr para C
+$x$ e o segundo para o valor da função objetivo. As funções do CUTEst para C
 recebem ponteiros em todos os valores. Os valores que são vetores não precisam
 de um ponteiro adicional. Note também que como utilizamos \verb+unsigned int+
 para os tamanhos, tivemos que converter os valores para \verb+int+.
 
 Veja agora o Exemplo 2. Nesse exemplo consideramos que as funções devem estar no mesmo
-formato que a função do CUTEr.
+formato que a função do CUTEst.
 \begin{code}{C}
 void ufn (int * n, double * x, double * f);
 void uofg (int * n, double * x, double * f, double * g, long int * grad);
 \end{code}
-O nome das funções foram escolhidas para seguir exatamente o formato do CUTEr, mas aqui
+O nome das funções foram escolhidas para seguir exatamente o formato do CUTEst, mas aqui
 elas poderiam ser qualquer coisa. Note que a função \verb+uofg+ foi utilizada no lugar
 da função \verb+ugr+. Essa função já calcula a função objetivo e o gradiente, sendo mais
 rápida que chamadas individuais. Com essa mudança, esse programa é levemente mais rápido
@@ -99,14 +100,14 @@ void uofg (int * n, double * x, double * f, double * g, long int * grad) {
   UOFG(n, x, f, g, grad);
 }
 \end{code}
-Essa interface fica muito mais natural de ser utilizada num problema com CUTEr. Não precisamos
+Essa interface fica muito mais natural de ser utilizada num problema com CUTEst. Não precisamos
 converter nenhuma variável, simplesmente fazer a chamada da função com os parâmetros já dados.
-Note, no entanto, que estamos utilizando \verb+long int+ para as variáveis lógicas do CUTEr.
+Note, no entanto, que estamos utilizando \verb+long int+ para as variáveis lógicas do CUTEst.
 Essa é uma definição do arquivo \verb+cuter.h+. Se mudarmos essa definição, então devemos
 criar uma variável \verb+logical GRAD = *grad+ e chamar a função com
 \verb+UOFG(n, x, f, g, &GRAD)+.
 
-A última interface já declara as funções que o CUTEr irá definir. Então no arquivo .c temos
+A última interface já declara as funções que o CUTEst irá definir. Então no arquivo .c temos
 \begin{code}{C}
 void ufn_ (int * n, double * x, double * f);
 void uofg_ (int * n, double * x, double * f, double * g, long int * grad);
@@ -128,7 +129,7 @@ acesso desses tipos para o usuário (assim como o arquivo \verb+cuter.h+). Dessa
 se o usuário tiver necessidade de mudar o arquivo \verb+cuter.h+, ele também pode (deve)
 mudar o arquivo com esses \verb+typedef+s.
 
-Para compilar a interface CUTEr dos testes utilize
+Para compilar a interface CUTEst dos testes utilize
 \begin{terminal}
 $ make cuter
 \end{terminal}
