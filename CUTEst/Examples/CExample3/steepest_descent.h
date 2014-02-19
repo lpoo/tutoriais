@@ -14,6 +14,7 @@ typedef struct _Status {
   my_integer iter;
   my_doublereal f, ng;
   my_integer n_objfun, n_gradfun;
+  my_integer exitflag;
 } Status;
 
 my_doublereal Norm (my_doublereal * x, my_integer n);

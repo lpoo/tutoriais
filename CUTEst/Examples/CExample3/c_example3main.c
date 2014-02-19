@@ -1,5 +1,39 @@
 #include "cutest.h"
 #include "steepest_descent.h"
+#include "string.h"
+
+void WriteTableLine (integer nvar, Status *status) {
+  char pname[10];
+  char filename[15];
+  char vname[10*nvar];
+  doublereal calls[4], time[2];
+  integer st = 0;
+  FILE *f;
+  int i = 0;
+
+  CUTEST_unames(&st, &nvar, pname, vname);
+  while (pname[i] != ' ') ++i;
+  pname[i] = 0;
+  strcpy(filename, pname);
+  strcat(filename, ".tableline");
+
+  f = fopen(filename, "w");
+
+  fprintf(f, "|Problem |EXITFLAG |   TIME     |     FVAL    |  GRADNORM   |\n");
+  fprintf(f, "%-9s ", pname);
+  if (status->exitflag == 0)
+    fprintf(f, "Converged ");
+  else
+    fprintf(f, "fail      ");
+
+  CUTEST_ureport(&st, calls, time);
+
+  fprintf(f, "%8.6e ", time[0]+time[1]);
+  fprintf(f, "%+8.6e ", status->f);
+  fprintf(f, "%+8.6e\n", status->ng);
+
+  fclose(f);
+}
 
 int MAINENTRY () {
   doublereal *x, *bl, *bu;
@@ -34,6 +68,8 @@ int MAINENTRY () {
   SteepestDescent(x, nvar, &status);
 
   SD_Print(x, nvar, &status);
+
+  WriteTableLine(nvar, &status);
 
   free(x);
   free(bl);

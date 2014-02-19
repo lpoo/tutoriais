@@ -10,6 +10,19 @@ void cutest_ufn_ (my_integer *, my_integer * n, my_doublereal * x, my_doublereal
 void cutest_uofg_ (my_integer *, my_integer * n, my_doublereal * x, my_doublereal * f,
     my_doublereal * g, my_logical * grad);
 
+my_doublereal NormInf (my_doublereal * x, my_integer n) {
+  my_integer i;
+  my_doublereal s = 0.0;
+
+  for (i = 0; i < n; i++) {
+    my_doublereal absxi = fabs(x[i]);
+    if (absxi > s) 
+      s = absxi;
+  }
+
+  return s;
+}
+
 my_doublereal Norm (my_doublereal * x, my_integer n) {
   my_integer i;
   my_doublereal s = 0.0;
@@ -46,12 +59,13 @@ void SteepestDescent (my_doublereal * x, my_integer n, Status *status) {
   status->iter = 0;
   status->n_objfun = 0;
   status->n_gradfun = 0;
+  status->exitflag = 0;
 
   cutest_uofg_(&st, &n, x, &f, g, &one);
   status->n_objfun++;
   status->n_gradfun++;
 
-  status->ng = Norm(g, n);
+  status->ng = NormInf(g, n);
 
   while (status->ng > EPSILON) {
     lambda = 1;
@@ -79,10 +93,12 @@ void SteepestDescent (my_doublereal * x, my_integer n, Status *status) {
     cutest_uofg_(&st, &n, x, &f, g, &one);
     status->n_objfun++;
     status->n_gradfun++;
-    status->ng = Norm(g, n);
+    status->ng = NormInf(g, n);
     status->iter++;
-    if (status->iter >= maxiter)
+    if (status->iter >= maxiter) {
+      status->exitflag = 1;
       break;
+    }
   }
 
   status->f = f;
@@ -97,6 +113,11 @@ void SD_Print (my_doublereal * x, my_integer n, Status * status) {
   if ( (x == 0) || (status == 0) )
     return;
 
+  if (status->exitflag == 0) {
+    printf("Converged to solution\n");
+  } else if (status->exitflag == 1) {
+    printf("Maximum iterations reached\n");
+  }
   printf("x = (%lf", x[0]);
   for (i = 1; i < n; i++)
     printf(",%lf", x[i]);
@@ -107,5 +128,6 @@ void SD_Print (my_doublereal * x, my_integer n, Status * status) {
   printf("|g(x)|        = %lf\n", status->ng);
   printf("objfun calls  = %d\n", status->n_objfun);
   printf("gradfun calls = %d\n", status->n_gradfun);
+  printf("exitflag      = %d\n", status->exitflag);
   printf("\n");
 }
