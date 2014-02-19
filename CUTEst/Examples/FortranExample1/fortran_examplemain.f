@@ -28,7 +28,7 @@ C     LOCAL SCALARS
       integer i
 
 C     CUTER STUFF - Include by Abel
-      integer err, ifile, nt, m
+      integer err, ifile, m
       double precision bl(n), bu(n)
       integer st
 
@@ -41,7 +41,7 @@ C     CUTER STUFF - Include by Abel
         STOP
       ENDIF
 
-      CALL cutest_cdimen(st, ifile, nt, m)
+      CALL cutest_cdimen(st, ifile, n, m)
 
       if (m.GT.0) THEN
         WRITE(*,*)'Cannot handle constraints' 
@@ -138,7 +138,7 @@ C     Gradient vector
 C     ******************************************************************
 C     ******************************************************************
 
-      subroutine endp(n,x)
+      subroutine endp(n,x,f,g,exitflag)
 
       implicit none
 
@@ -147,6 +147,9 @@ C     SCALAR ARGUMENTS
 
 C     ARRAY ARGUMENTS
       double precision x(n)
+      double precision f, ng
+      double precision g(n)
+      integer exitflag
 
 C     This subroutine can be used to do some extra job after the solver
 C     has found the solution.
@@ -158,11 +161,51 @@ C     subroutine inip. But in this subroutine there are not output
 C     parameter. All the parameters are input parameters.
 
 C     LOCAL SCALAR
-      integer i
+      integer i, st
+
+      character ( len = 10 ) :: pname
+      character ( len = 10 ), dimension(n) :: vnames
+      character ( len = 15 ) :: filename
+      character ( len = 10 ) :: charflag
+      double precision calls(4)
+      double precision time(2)
+
+      ng = 0.0d0
+      do i = 1,n
+        ng = max(ng, abs(g(i)))
+      end do
+      
+      if (exitflag.eq.0) then
+        write(*,*) 'Converged'
+      elseif (exitflag.eq.1) then
+        write(*,*) 'Maximum iteration reached'
+      endif
       
       write(*,*)'Solution:'
       do i = 1,n
           write(*,*)x(i)
       end do
+
+      write(*,*) 'f = ', f
+      write(*,*) '|g| = ', ng
+
+      call cutest_unames(st, n, pname, vnames)
+
+      filename = trim(pname)//'.tableline'
+      open(unit=2, file=filename)
+
+      call cutest_ureport(st, calls, time)
+
+      if (exitflag.eq.0) then
+        charflag = 'Converged'
+      elseif (exitflag.eq.1) then
+        charflag = 'fail'
+      endif
+
+      write(2,*) 'Problem |EXITFLAG |    TIME    |     FVAL    |   GRADN
+     CORM'
+      write(2,1000) pname, charflag, time(1)+time(2), f, ng
+ 1000 format(A9,1X,A9,1X,ES12.6,1X,SP,ES13.6,1X,ES13.6)
       
       end 
+

@@ -115,7 +115,7 @@ C     Gradient vector
 C     ******************************************************************
 C     ******************************************************************
 
-      subroutine endp(n,x)
+      subroutine endp(n,x,f,g,exitflag)
 
       implicit none
 

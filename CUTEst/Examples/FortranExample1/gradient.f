@@ -1,4 +1,4 @@
-      subroutine gradient(n,x,epsopt)
+      subroutine gradient(n,x,epsopt,f,g,exitflag)
       
       implicit none
       
@@ -14,6 +14,7 @@ C
 C     Author: Leandro Prudente
 C     e-mail: lfprudente@gmail.com
 C     Date:   15/10/2012 
+C     Modified: 19/02/2014
 C
 C     Parameters of the subroutine:
 C
@@ -32,10 +33,19 @@ C     On Return:
 C
 C     x        double precision x(n),
 C              solution point.
+C     f        double precision,
+C              objective function value on the solution.
+C     g        double precision g(n),
+C              gradient on the solution.
+C     exitflag integer,
+C              Value indicating the result of the method
+C                0 - Converged
+C                1 - Failed due to maximum iteration
 
  
 C     LOCAL SCALARS
       integer it,i
+      integer exitflag
       double precision f,gsupn
       real time
 
@@ -100,6 +110,7 @@ C     Test optimality
           write(*,1020)
           write(*,1030) it, f, gsupn
           
+          exitflag = 0
           return
       end if
       
@@ -111,6 +122,7 @@ C     Test whether the number of iterations is exhausted
           write(*,1050)
           write(*,1060) time
           
+          exitflag = 1
           return
           
       end if    
