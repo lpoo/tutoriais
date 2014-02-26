@@ -36,11 +36,14 @@ void cutest_uofg_ (my_integer * st, my_integer * n, my_doublereal * x, my_double
 my_integer main () {
   my_doublereal x[2];
   Status status;
+  Param param;
+  DefaultParam(&param);
+  ReadParam(&param);
 
   x[0] = 2;
   x[1] = 10;
 
-  SteepestDescent(x, 2, &status);
+  SteepestDescent(x, 2, &status, &param);
 
   SD_Print(x, 2, &status);
 

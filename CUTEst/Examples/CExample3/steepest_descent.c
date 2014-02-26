@@ -1,4 +1,5 @@
 #include "steepest_descent.h"
+#include <string.h>
 
 #define EPSILON 1e-6
 
@@ -43,11 +44,11 @@ my_doublereal NormSqr (my_doublereal * x, my_integer n) {
   return s;
 }
 
-void SteepestDescent (my_doublereal * x, my_integer n, Status *status) { 
+void SteepestDescent (my_doublereal * x, my_integer n, Status *status, Param *param) { 
   my_doublereal * g, f, fp;
   my_doublereal * xp, lambda, ng_sqr;
-  my_doublereal alpha = 1e-4;
-  my_integer i, maxiter = 1e4;
+  my_doublereal alpha = param->alpha;
+  my_integer i, maxiter = param->maxiter;
   my_integer st;
   my_logical one = 1;
 
@@ -130,4 +131,30 @@ void SD_Print (my_doublereal * x, my_integer n, Status * status) {
   printf("gradfun calls = %d\n", status->n_gradfun);
   printf("exitflag      = %d\n", status->exitflag);
   printf("\n");
+}
+
+void DefaultParam (Param *param) {
+  param->alpha = 1e-4;
+  param->maxiter = 1e4;
+}
+
+void ReadParam (Param *param) {
+  FILE *f = fopen("param.spc","r");
+  char name[64];
+  if (f == NULL) {
+    printf("param.spc not found. Skipping\n");
+    return;
+  }
+
+  while (fscanf(f, "%s", name) != EOF) {
+    if (strcmp(name, "alpha") == 0) {
+      fscanf(f, "%lf", &param->alpha);
+    } else if (strcmp(name, "maxiter") == 0) {
+      fscanf(f, "%d", &param->maxiter);
+    } else {
+      printf("Error '%s' is not a valid parameter\n", name);
+      break;
+    }
+  }
+  fclose(f);
 }

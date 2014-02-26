@@ -4,7 +4,7 @@
 
 void WriteTableLine (integer nvar, Status *status) {
   char pname[10];
-  char filename[15];
+  char filename[25];
   char vname[10*nvar];
   doublereal calls[4], time[2];
   integer st = 0;
@@ -43,6 +43,9 @@ int MAINENTRY () {
   integer i;
   Status status;
   integer st;
+  Param param;
+  DefaultParam(&param);
+  ReadParam(&param);
 
   FORTRAN_open(&funit, fname, &ierr);
   CUTEST_cdimen(&st, &funit, &nvar, &ncon);
@@ -65,7 +68,7 @@ int MAINENTRY () {
     }
   }
 
-  SteepestDescent(x, nvar, &status);
+  SteepestDescent(x, nvar, &status, &param);
 
   SD_Print(x, nvar, &status);
 

@@ -165,7 +165,7 @@ C     LOCAL SCALAR
 
       character ( len = 10 ) :: pname
       character ( len = 10 ), dimension(n) :: vnames
-      character ( len = 15 ) :: filename
+      character ( len = 25 ) :: filename
       character ( len = 10 ) :: charflag
       double precision calls(4)
       double precision time(2)

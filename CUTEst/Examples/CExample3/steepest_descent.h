@@ -17,9 +17,16 @@ typedef struct _Status {
   my_integer exitflag;
 } Status;
 
+typedef struct _Param {
+  my_integer maxiter;
+  my_doublereal alpha;
+} Param;
+
+void DefaultParam (Param *param);
+void ReadParam (Param *param);
 my_doublereal Norm (my_doublereal * x, my_integer n);
 my_doublereal NormSqr (my_doublereal * x, my_integer n);
-void SteepestDescent (my_doublereal * x, my_integer n, Status * status);
+void SteepestDescent (my_doublereal * x, my_integer n, Status * status, Param * param);
 void SD_Print (my_doublereal * x, my_integer n, Status * status);
 
 
