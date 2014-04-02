@@ -1,0 +1,10 @@
+gcc
+make
+vim
+tmux
+screen
+git
+git-svn
+rsync
+jekyll
+latex
