@@ -34,3 +34,9 @@ Para imprimir:
 ~~~
 $ lp filename
 ~~~
+
+Para adicionar a impressora padrão:
+
+~~~
+$ lpoptions -d nome-da-impressora
+~~~
