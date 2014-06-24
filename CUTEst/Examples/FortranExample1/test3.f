@@ -120,10 +120,10 @@ C     ******************************************************************
       implicit none
 
 C     SCALAR ARGUMENTS
-      integer n
+      integer n, exitflag
 
 C     ARRAY ARGUMENTS
-      double precision x(n)
+      double precision x(n), f, g(n)
 
 C     This subroutine can be used to do some extra job after the solver
 C     has found the solution.
