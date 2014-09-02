@@ -1,0 +1,1 @@
+0 0 * * * cd /home/nginx/lpoo.github.io && /usr/bin/git pull && /usr/local/bin/jekyll build && cp -r _site/* /home/nginx/public
