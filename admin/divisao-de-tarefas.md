@@ -14,8 +14,7 @@ As tarefas de administrador são várias, principalmente porque surgem do nada, 
 entanto, podemos descrever algumas das obrigações de maneira geral:
 
   - Administração de pessoas
-  - Administração da impressora
-  - Administração do café
+  - Administração da impressora e do café
   - Administração de eventos
   - Administração online
 
@@ -27,22 +26,18 @@ Quando pessoas entram ou saem do LPOO, elas devem ter local alocado, chave,
 acesso à material básico, explicação, etc. Além disso, raramente podem haver
 conflitos pessoais, e um mediador pode ser necessário.
 
-### Administração da impressora
+### Administração da impressora e do café
 
 Configuração da impressora na rede, e no computador do usuário (quando
 possível). Obtenção de folhas e tinta, pedindo para os colegas com reserva
-técnica, ou para o responsável.
-
-### Administração do café
-
-Gerenciamento financeiro do café. Compra, ou requisição de compra, dos
-suprimentos. Quando for necessário, organização da vaquinha. Atualização da
-planilha de compras.
+técnica, ou para o responsável.  Gerenciamento financeiro do café. Compra, ou
+requisição de compra, dos suprimentos. Quando for necessário, organização da
+vaquinha. Atualização da planilha de compras.
 
 ### Administração de eventos
 
 Marcar as reuniões e organizar a sala com o projetor e afins. Encabeçar os
-eventos maiores, quando houverem.
+eventos maiores, quando houver.
 
 ### Administração online
 
